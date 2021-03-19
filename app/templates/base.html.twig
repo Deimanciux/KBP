@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Kanban Board!{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('appStyle') }}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-dark navbar-expand-md sticky-top bg-dark p-0">
+            <a class="navbar-brand col-sm-3 col-md-1 mr-0"
+               href="{{ path('index_page') }}">Kanban Board</a>
+
+            <div class="w-100 order-1 order-md-0">
+                <ul class="navbar-nav px-3">
+                    <li class="nav-item text-nowrap">
+                        {%  if(is_granted("ROLE_USER")) %}
+                            <div id="board-title" contenteditable="true">
+                                Create a title for your board
+                            </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="order-2 order-md-1">
+                <ul class="navbar-nav px-3">
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link"
+                               href="#">{{ app.user.username }} </a>
+                        </li>
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link"
+                               href="{{ path('security_logout') }}">Sign out</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link"
+                               href="{{ path('security_login') }}">Login</a>
+                        </li>
+                        <li class="nav-item text-nowrap">
+                            <a class="nav-link"
+                               href="{{ path('user_register') }}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        {% block body %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

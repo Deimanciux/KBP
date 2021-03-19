@@ -1,0 +1,215 @@
+@import "~bootstrap";
+@import "~font-awesome";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, .login_container, .row {
+  width: 100%;
+}
+
+.login_form {
+  margin-top: 2em;
+  overflow-x: -moz-scrollbars-none;
+}
+
+.app {
+  height: 96vh;
+  background-image: url("../images/9.jpg");
+  background-color: rgb(255,250,247);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  transition: all 0.2s linear;
+  flex-flow: column;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  overflow-y: auto;
+}
+
+#lists {
+  height: 96vh;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#lists .list_placeholders {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  width: 100%;
+  min-width: 250px;
+  max-width: 300px;
+  height: 100%;
+  min-height: 100px;
+  padding: 8px;
+  transition: all 0.2s linear;
+  border-radius: 2px;
+}
+
+#lists .list_placeholders .list {
+  position: relative;
+  width: 100%;
+  min-width: 150px;
+  max-width: 300px;
+  height: auto;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 8px 8px 0 8px;
+  transition: all 0.2s linear;
+}
+
+#lists .list_placeholders .list .list-item {
+  position: relative;
+  background-color: #F3F3F3;
+  border-radius: 3px;
+  padding: 23px 10px 10px 10px;
+  text-align: left;
+  margin: 6px 0 4px 0;
+  min-width: 150px;
+  max-width: 300px;
+  color: rgba(0, 0, 0, 0.8);
+  overflow-wrap: break-word;
+}
+
+#lists .list_placeholders .list .list-item .list-item-text {
+  outline: none;
+}
+
+
+.input-container{
+
+  padding: 8px;
+  width: 100%;
+  min-width: 150px;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.new-list-input-container{
+  padding: 8px;
+  min-width: 150px;
+  max-width: 300px;
+  width: 100%;
+}
+
+.input_item {
+  background-color: transparent;
+  padding: 15px 20px;
+  text-align: left;
+  border: none;
+  width: 100%;
+  min-width: 150px;
+  max-width: 300px;
+  color: white;
+  font-size: 16px;
+}
+
+.input_item:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.input_item::placeholder {
+  color: white;
+}
+
+.input_item:focus {
+  outline: none;
+}
+
+.input_item:focus::placeholder {
+  color: transparent;
+}
+
+.list-heading {
+  margin: 6px 2px 2px 2px;
+  font-size: large;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.delete-button {
+  position:absolute;
+  top:0;
+  right:0;
+  margin: 4px;
+  padding: 2px 3px;
+}
+
+.delete-button-invisible {
+  position:absolute;
+  top:0;
+  right:0;
+  margin: 4px;
+  padding: 2px 3px;
+  visibility: hidden;
+}
+
+.check-button {
+  position:absolute;
+  top:0;
+  right: 0;
+  margin: 4px;
+  padding: 2px 3px;
+}
+
+.edit-button {
+  position:absolute;
+  top: 0;
+  right: 20px;
+  margin: 4px;
+  padding: 3px;
+}
+.edit-button-invisible {
+  position:absolute;
+  top: 0;
+  right: 20px;
+  margin: 4px;
+  padding: 3px;
+  visibility: hidden;
+}
+
+.reset-button {
+  position:absolute;
+  top: 0;
+  right: 0;
+  margin: 4px;
+  padding: 2px 3px;
+}
+
+/*scrollbar*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#user_Register {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+#board-title {
+  color: whitesmoke;
+}
