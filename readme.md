@@ -3,7 +3,7 @@
 Application for managing your tasks in virtualized kanban bord. Created on Symfony framework,
 MySQL database, Vanilla JS. 
 
-##Specifications
+## Specifications
 
 - php 7.4
 - symfony 5.2.3
@@ -52,7 +52,7 @@ Go to the url: http://localhost:8080
 
 Project uses some third party tools for code quality inspection:
 
-####phpDepend
+#### phpDepend
  - documentation: https://pdepend.org/documentation/software-metrics/index.html
  
  - Download
