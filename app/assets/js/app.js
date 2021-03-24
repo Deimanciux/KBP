@@ -10,21 +10,7 @@ let currentBoard = [];
 let boards = [];
 let boardTitle = document.getElementById('board-title');
 
-//sarasu masyvas, kuriame sasaso pavadinimas ir saraso id
-let listsArray = [
-    {
-        title: "To Do",
-        id: 0
-    },
-    {
-        title: "Doing",
-        id: 1
-    },
-    {
-        title: "Done",
-        id: 2
-    }
-];
+let listsArray = [];
 
 /*BOARDS*/
 async function getBoardByIdFromDatabase() {
@@ -37,7 +23,7 @@ async function getBoardByIdFromDatabase() {
             currentBoard.push(response);
         },
         error: function (response) {
-            console.log(response);
+
         }
     });
 }
@@ -56,25 +42,74 @@ function getAllBoardsFromDatabase() {
             }
         },
         error: function (response) {
-            console.log(msg);
+
+        }
+    });
+}
+
+async function getAllTablesByBoard() {
+  await $.ajax({
+        method: "GET",
+        url: "/table/1",
+        dataType: 'json',
+
+        success: function (response) {
+            let data = response.data;
+
+            for(item of data) {
+                listsArray.push(item);
+            }
+        },
+        error: function (response) {
+
         }
     });
 }
 
 function sendBoardEditRequest() {
-    console.log(currentBoard[0].title);
-    $.ajax({
+     $.ajax({
         method: "PUT",
-        url: "/board/1",
+        url: "/board/1" ,
+        contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data: {
-            title: currentBoard[0].title
-        },
+        data: JSON.stringify({ title : currentBoard[0].title }),
         success: function (response) {
-            console.log('response', response);
+
         },
         error: function (response) {
-            console.log('error', response);
+
+        }
+    });
+}
+
+async function sendTableAddRequest(tableTitle) {
+   await $.ajax({
+        method: "POST",
+        url: "/table/add/1" ,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify({ title : tableTitle }),
+        success: function (response) {
+            listsArray.push(response);
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
+function sendTableEditRequest(title) {
+    $.ajax({
+        method: "PUT",
+        url: "/table/edit/1" ,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify({ title : title }),
+        success: function (response) {
+
+        },
+        error: function (response) {
+
         }
     });
 }
@@ -86,7 +121,6 @@ function getDragBox(event) {
         dragBox = event.target.parentElement;
     }
     else if(event.target.tagName == 'DIV' && event.target.className =='list-item-text'){
-        //cardsArray[draggedItem.dataset.card_index].cardId = cardsArray[event.target.dataset.card_index].cardId;
         dragBox = event.target.parentElement.parentElement;
     }
     else if(event.target.tagName == 'DIV' && event.target.children[0].tagName == 'INPUT'){
@@ -99,7 +133,6 @@ function getDragBox(event) {
         dragBox = event.target;
     }
     else if(event.target.tagName == 'DIV' && event.target.className =='list-item'){
-        //cardsArray[draggedItem.dataset.card_index].cardId = cardsArray[event.target.dataset.card_index].cardId;
         dragBox = event.target.parentElement;
     }
     else if (event.target.tagName == 'DIV' && event.target.className =='list_placeholders'){
@@ -173,39 +206,52 @@ const dragDrop = (event) => {
     }
 };
 
-const headingOnClickToEdit = (event) => {
-    event.target.focus();
-    event.target.addEventListener('blur', headingEditedAndLeftWithoutSubmission);
-    event.target.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            event.target.blur();
-        }
-    })
-};
+// const headingOnClickToEdit = (event) => {
+//     event.target.focus();
+//     event.target.addEventListener('blur', headingEditedAndLeftWithoutSubmission);
+//     event.target.addEventListener("keydown", function (event) {
+//         if (event.key === "Enter") {
+//             event.preventDefault();
+//             event.target.blur();
+//         }
+//     })
+// };
 
-const boardTitleOnClickToEdit = (event) => {
-    event.target.focus();
-   // event.target.addEventListener('blur', boardTitleEditedAndLeftWithoutSubmission);
-    event.target.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            event.target.blur();
-            sendBoardEditRequest();
-        }
-    });
-};
+function listOnBlurEdit(event) {
+    console.log('target' + event.target);
+    //currentBoard[0].title = boardTitle.innerHTML;
+    //sendBoardEditRequest();
+}
+
+function listOnEnterEdit (event)
+{
+    if (event.key === "Enter") {
+        event.preventDefault();
+        event.target.blur();
+    }
+}
+
+function boardOnEnterEdit (event)
+{
+    if (event.key === "Enter") {
+        event.preventDefault();
+        event.target.blur();
+    }
+}
+
+function boardOnBLurEdit ()
+{
+    currentBoard[0].title = boardTitle.innerHTML;
+    sendBoardEditRequest();
+}
 
 function headingEditedAndLeftWithoutSubmission()
 {
+    console.log(this);
     let listIndex = this.dataset.listIndex;
+    console.log('index' + this.dataset.listIndex);
     listsArray[listIndex].title = this.innerHTML;
-}
-
-function boardTitleEditedAndLeftWithoutSubmission()
-{
-    currentBoard[0].title = this.innerHTML;
-    sendBoardEditRequest();
+    console.log('innerhtml' + this.innerHTML);
 }
 
 function cardOnMouseOver()
@@ -283,19 +329,6 @@ function biggestListId()
     return biggestId;
 }
 
-function biggestCardId()
-{
-    let biggestId = 0;
-    for(let i = 0; i < cardsArray.length; i++)
-    {
-        if(cardsArray[i].cardId > biggestId)
-        {
-            biggestId = cardsArray[i].cardId;
-        }
-    }
-    return biggestId;
-}
-
 function listIndexInListArray(id)
 {
     let arrayIndex = 0;
@@ -310,18 +343,20 @@ function listIndexInListArray(id)
     return arrayIndex;
 }
 
-function init() {
-    getBoardByIdFromDatabase().then(function () {
-        boardTitle.innerHTML = currentBoard[0].title;
-        display_list();
-    })
+async function init() {
+    await getBoardByIdFromDatabase();
+    await getAllTablesByBoard();
+    boardTitle.innerHTML = currentBoard[0].title;
+    display_list();
 }
 
 function display_list()
 {
     //isvalo visa lauka
     listsContainerHtml.innerHTML = "";
-    boardTitle.addEventListener('click', boardTitleOnClickToEdit);
+
+    boardTitle.addEventListener('blur', boardOnBLurEdit);
+    boardTitle.addEventListener('keydown', boardOnEnterEdit);
 
     for(let i = 0; i < listsArray.length; i++) {
         let list_placeholders = document.createElement("div");
@@ -345,7 +380,9 @@ function display_list()
         heading.dataset.listIndex = listsArray[i].id;
         list.appendChild(heading);
 
-        heading.addEventListener('click', headingOnClickToEdit);
+        heading.addEventListener('blur', listOnBlurEdit);
+        heading.addEventListener('keydown', listOnEnterEdit);
+        // heading.addEventListener('click', headingOnClickToEdit);
 
         listsHtml = document.querySelectorAll('.list');
 
@@ -428,16 +465,13 @@ function insert_new_list()
     new_list_input_container.appendChild(write_list);
 
 //kad paspaudus enter submitintu, sukurtu masyve nauja sarasa
-    write_list.addEventListener("keydown", function (event) {
+    write_list.addEventListener("keydown", async function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
             if(event.target.value) {
                 let list_name = event.target.value;
 
-                listsArray.push({
-                    title: list_name,
-                    id: biggestListId() + 1
-                });
+                await sendTableAddRequest(list_name);
 
                 listsContainerHtml.innerHTML = '';
 
@@ -475,7 +509,6 @@ function insert_new_task()
                     cardsArray.push({
                         description: description,
                         list_id: id,
-                        //cardId: biggestCardId()+1
                     });
                     display_list();
                 }
@@ -485,3 +518,4 @@ function insert_new_task()
 }
 
 init();
+// display_list();

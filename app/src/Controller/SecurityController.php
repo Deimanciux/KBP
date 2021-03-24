@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class SecurityController extends AbstractController
 {
@@ -22,7 +26,11 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/login", name="security_login")
-     * @throws
+     * @param AuthenticationUtils $authenticationUtils
+     * @return RedirectResponse|Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {

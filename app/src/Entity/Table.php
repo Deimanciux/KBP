@@ -39,6 +39,13 @@ class Table
      */
     private $cards;
 
+    /**
+     * @ORM\Column(type="integer", length=2)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=30)
+     */
+    private $place;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
@@ -91,5 +98,17 @@ class Table
     public function setCards(ArrayCollection $cards): void
     {
         $this->cards = $cards;
+    }
+
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    public function setPlace($place): self
+    {
+        $this->place = $place;
+
+        return $this;
     }
 }

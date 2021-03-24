@@ -5,20 +5,21 @@ namespace App\Controller;
 use App\Entity\Board;
 use App\Entity\Table;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/table")
- * @Security("is_granted('ROLE_USER')", message="Access denied")
  */
 class TableController extends AbstractController
 {
     /**
      * @Route("/{id}", name="get_tables", methods={"GET"})
+     * @param Board $board
+     * @return JsonResponse
      */
     public function getTablesByBoard(Board $board)
     {
@@ -32,11 +33,18 @@ class TableController extends AbstractController
                     "title" => $item->getTableTitle()
                 ];
             }, $tables)
-        ]);
+        ],
+        200,
+        ["Content-Type: application/json"]
+        );
     }
 
     /**
-     * @Route("/edit/{id}", name="edit_table", methods={"PUT"})
+     * @Route("/{id}", name="edit_table", methods={"PATCH"})
+     * @param Table $table
+     * @param Request $request
+     * @param LoggerInterface $logger
+     * @return JsonResponse
      */
     public function editTable(Table $table, Request $request, LoggerInterface $logger)
     {
@@ -53,24 +61,41 @@ class TableController extends AbstractController
     }
 
     /**
-     * @Route("/add/{id}", name="add_table", methods={"POST"})
+     * @Route("/{id}", name="add_table", methods={"POST"})
+     * @param Board $board
+     * @param Request $request
+     * @param LoggerInterface $logger
+     * @return JsonResponse
      */
-    public function addTable(Board $board, Request $request)
+    public function addTable(Board $board, Request $request, LoggerInterface $logger)
     {
+        $repository = $this->getDoctrine()->getRepository(Table::class);
+        $maxPlace = $repository->findMaxPlaceValueOfTable($board);
+
         $data = json_decode($request->getContent(), true);
         $table = new Table();
         $table->setTableTitle($data['title']);
         $table->setBoard($board);
+        $table ->setPlace((int)$maxPlace + 1);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($table);
         $em->flush();
 
-        return $this->json(['success' => true], Response::HTTP_ACCEPTED);
+        return $this->json([
+                "id" => $table->getId(),
+                "title" => $table->getTableTitle(),
+                'place' => $table->getPlace()
+            ],
+            200,
+            ["Content-Type: application/json"]
+        );
     }
 
     /**
-     * @Route("/delete/{id}", name="delete_table", methods={"DELETE"})
+     * @Route("/{id}", name="delete_table", methods={"DELETE"})
+     * @param Table $table
+     * @return JsonResponse
      */
     public function deleteTable(Table $table)
     {
