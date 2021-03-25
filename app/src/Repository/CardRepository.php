@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Board;
 use App\Entity\Card;
+use App\Entity\Table;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +23,39 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
-    // /**
-    //  * @return Card[] Returns an array of Card objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Table $table
+     * @return mixed
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findMaxPlaceValueOfCard(Table $table)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('s');
 
-    /*
-    public function findOneBySomeField($value): ?Card
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+        return $queryBuilder->select('max(s.place)')
+            ->where('s.table = :id')
+            ->setParameter('id', $table)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
         ;
     }
-    */
+
+    /**
+     * @param Table $table
+     * @return array
+     */
+    public function findCardsByPlace(Board $board)
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        return $queryBuilder->select('c.id, c.text, c.place, t.id as list_id')
+            ->innerJoin('c.table', 't')
+            ->innerJoin('t.board', 'b')
+            ->where('b.id = :id')
+            ->setParameter('id', $board)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }

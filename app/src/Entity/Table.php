@@ -26,7 +26,7 @@ class Table
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=100)
      */
-    private $tableTitle;
+    private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Board", inversedBy="tables")
@@ -56,14 +56,14 @@ class Table
         return $this->id;
     }
 
-    public function getTableTitle(): ?string
+    public function getTitle(): ?string
     {
-        return $this->tableTitle;
+        return $this->title;
     }
 
-    public function setTableTitle(string $tableTitle): self
+    public function setTitle(string $title): self
     {
-        $this->tableTitle = $tableTitle;
+        $this->title = $title;
 
         return $this;
     }

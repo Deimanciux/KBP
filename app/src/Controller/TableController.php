@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Board;
 use App\Entity\Table;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,57 +23,49 @@ class TableController extends AbstractController
     public function getTablesByBoard(Board $board)
     {
         $repository = $this->getDoctrine()->getRepository(Table::class);
-        $tables = $repository->findBy(['board' => $board]);
+        $tables = $repository->findTablesByPlace($board);
 
-        return $this->json([
-            "data" => array_map(function (Table $item) {
-                return [
-                    "id" => $item->getId(),
-                    "title" => $item->getTableTitle()
-                ];
-            }, $tables)
-        ],
-        200,
-        ["Content-Type: application/json"]
-        );
+        return $this->json($tables);
     }
 
     /**
-     * @Route("/{id}", name="edit_table", methods={"PATCH"})
+     * @Route("/title/{id}", name="edit_table", methods={"PATCH"})
      * @param Table $table
      * @param Request $request
-     * @param LoggerInterface $logger
      * @return JsonResponse
      */
-    public function editTable(Table $table, Request $request, LoggerInterface $logger)
+    public function editTable(Table $table, Request $request)
     {
         $data = json_decode($request->getContent(), true);
 
         $title = $data['title'];
 
-        $table->setTableTitle(trim($title));
+        $table->setTitle(trim($title));
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return $this->json(['success' => true], Response::HTTP_ACCEPTED);
+        return $this->json([
+            'id' => $table->getId(),
+            'title' => $table->getTitle()
+            ]
+        );
     }
 
     /**
      * @Route("/{id}", name="add_table", methods={"POST"})
      * @param Board $board
      * @param Request $request
-     * @param LoggerInterface $logger
      * @return JsonResponse
      */
-    public function addTable(Board $board, Request $request, LoggerInterface $logger)
+    public function addTable(Board $board, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Table::class);
         $maxPlace = $repository->findMaxPlaceValueOfTable($board);
 
         $data = json_decode($request->getContent(), true);
         $table = new Table();
-        $table->setTableTitle($data['title']);
+        $table->setTitle($data['title']);
         $table->setBoard($board);
         $table ->setPlace((int)$maxPlace + 1);
 
@@ -84,11 +75,9 @@ class TableController extends AbstractController
 
         return $this->json([
                 "id" => $table->getId(),
-                "title" => $table->getTableTitle(),
+                "title" => $table->getTitle(),
                 'place' => $table->getPlace()
-            ],
-            200,
-            ["Content-Type: application/json"]
+            ]
         );
     }
 

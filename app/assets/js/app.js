@@ -12,7 +12,6 @@ let boardTitle = document.getElementById('board-title');
 
 let listsArray = [];
 
-/*BOARDS*/
 async function getBoardByIdFromDatabase() {
     await jQuery.ajax({
         method: "GET",
@@ -37,7 +36,7 @@ function getAllBoardsFromDatabase() {
         success: function (response) {
             let data = response.data;
 
-            for(item of data) {
+            for (item of data) {
                 boards.push(item);
             }
         },
@@ -48,16 +47,14 @@ function getAllBoardsFromDatabase() {
 }
 
 async function getAllTablesByBoard() {
-  await $.ajax({
+    await $.ajax({
         method: "GET",
         url: "/table/1",
         dataType: 'json',
 
         success: function (response) {
-            let data = response.data;
-
-            for(item of data) {
-                listsArray.push(item);
+            for (let table of response) {
+                listsArray.push(table);
             }
         },
         error: function (response) {
@@ -67,12 +64,12 @@ async function getAllTablesByBoard() {
 }
 
 function sendBoardEditRequest() {
-     $.ajax({
-        method: "PUT",
-        url: "/board/1" ,
+    $.ajax({
+        method: "PATCH",
+        url: "/board/1",
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data: JSON.stringify({ title : currentBoard[0].title }),
+        data: JSON.stringify({title: currentBoard[0].title}),
         success: function (response) {
 
         },
@@ -83,12 +80,12 @@ function sendBoardEditRequest() {
 }
 
 async function sendTableAddRequest(tableTitle) {
-   await $.ajax({
+    await $.ajax({
         method: "POST",
-        url: "/table/add/1" ,
+        url: "/table/1",
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data: JSON.stringify({ title : tableTitle }),
+        data: JSON.stringify({title: tableTitle}),
         success: function (response) {
             listsArray.push(response);
         },
@@ -98,13 +95,84 @@ async function sendTableAddRequest(tableTitle) {
     });
 }
 
-function sendTableEditRequest(title) {
-    $.ajax({
-        method: "PUT",
-        url: "/table/edit/1" ,
+async function sendTableEditRequest(index, title) {
+    await $.ajax({
+        method: "PATCH",
+        url: "/table/title/" + index,
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data: JSON.stringify({ title : title }),
+        data: JSON.stringify({title: title}),
+        success: function (response) {
+            setListTitle(response);
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
+function setListTitle(response) {
+    for (let i = 0; i < listsArray.length; i++) {
+        if (listsArray[i].id === response.id) {
+            listsArray[i].title = response.title;
+        }
+    }
+}
+
+async function getAllCardsByTable() {
+    await $.ajax({
+        method: "GET",
+        url: "/card/1",
+        dataType: 'json',
+
+        success: function (response) {
+            for (let card of response) {
+                cardsArray.push(card);
+            }
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
+async function sendCardAddRequest(id, text) {
+    await $.ajax({
+        method: "POST",
+        url: "/card/" + id,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify({text: text}),
+        success: function (response) {
+            cardsArray.push(response);
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
+async function sendCardEditRequest(index, text) {
+    await $.ajax({
+        method: "PATCH",
+        url: "/card/" + index,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify({text: text}),
+        success: function (response) {
+
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
+async function sendCardDeleteRequest(index) {
+    await $.ajax({
+        method: "DELETE",
+        url: "/card/" + index,
+        contentType: "application/json; charset=utf-8",
         success: function (response) {
 
         },
@@ -116,32 +184,25 @@ function sendTableEditRequest(title) {
 
 function getDragBox(event) {
 
-    if(event.target.tagName == 'H3')
-    {
+    if (event.target.tagName == 'H3') {
         dragBox = event.target.parentElement;
-    }
-    else if(event.target.tagName == 'DIV' && event.target.className =='list-item-text'){
+    } else if (event.target.tagName == 'DIV' && event.target.className == 'list-item-text') {
         dragBox = event.target.parentElement.parentElement;
-    }
-    else if(event.target.tagName == 'DIV' && event.target.children[0].tagName == 'INPUT'){
+    } else if (event.target.tagName == 'DIV' && event.target.children[0].tagName == 'INPUT') {
         dragBox = event.target.parentElement.children[0];
-    }
-    else if(event.target.tagName == 'INPUT') {
+    } else if (event.target.tagName == 'INPUT') {
         dragBox = event.target.parentElement.parentElement.children[0];
-    }
-    else if(event.target.tagName == 'DIV' && event.target.className =='list'){
+    } else if (event.target.tagName == 'DIV' && event.target.className == 'list') {
         dragBox = event.target;
-    }
-    else if(event.target.tagName == 'DIV' && event.target.className =='list-item'){
+    } else if (event.target.tagName == 'DIV' && event.target.className == 'list-item') {
         dragBox = event.target.parentElement;
-    }
-    else if (event.target.tagName == 'DIV' && event.target.className =='list_placeholders'){
+    } else if (event.target.tagName == 'DIV' && event.target.className == 'list_placeholders') {
         dragBox = event.target.children[0];
-    }
-    else {
+    } else {
         dragBox = null;
     }
 }
+
 //kortelei
 const dragStart = (event) => {
     draggedItem = event.target;
@@ -164,7 +225,7 @@ const dragOver = (event) => {
     event.preventDefault();
     getDragBox(event);
 
-    if(dragBox) {
+    if (dragBox) {
         dragBox.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
         dragBox.style.transition = '0.1s';
         dragBox.parentElement.lastChild.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
@@ -172,10 +233,10 @@ const dragOver = (event) => {
     }
 };
 
-function dragEnter (event) {
+function dragEnter(event) {
     event.preventDefault();
 
-    if(dragBox) {
+    if (dragBox) {
         dragBox.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
         dragBox.style.transition = '0.1s';
         dragBox.parentElement.lastChild.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
@@ -185,7 +246,7 @@ function dragEnter (event) {
 
 const dragLeave = (event) => {
     event.preventDefault();
-    if(dragBox){
+    if (dragBox) {
         dragBox.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
         dragBox.parentElement.lastChild.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
     }
@@ -194,79 +255,45 @@ const dragLeave = (event) => {
 const dragDrop = (event) => {
     event.preventDefault();
 
-    if(event.target.tagName == 'DIV' && event.target.className =='list-item') {
-        /* cardsArray[draggedItem.dataset.card_index].cardId = cardsArray[event.target.dataset.card_index].cardId;*/
+    if (event.target.tagName === 'DIV' && event.target.className === 'list-item') {
         dragBox = event.target.parentElement;
     }
 
-    if(dragBox) {
+    if (dragBox) {
         dragBox.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
         dragBox.parentElement.lastChild.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
         dragBox.append(draggedItem);
     }
 };
 
-// const headingOnClickToEdit = (event) => {
-//     event.target.focus();
-//     event.target.addEventListener('blur', headingEditedAndLeftWithoutSubmission);
-//     event.target.addEventListener("keydown", function (event) {
-//         if (event.key === "Enter") {
-//             event.preventDefault();
-//             event.target.blur();
-//         }
-//     })
-// };
-
-function listOnBlurEdit(event) {
-    console.log('target' + event.target);
-    //currentBoard[0].title = boardTitle.innerHTML;
-    //sendBoardEditRequest();
+async function listOnBlurEdit(event) {
+    await sendTableEditRequest(this.dataset.listIndex, this.innerHTML);
 }
 
-function listOnEnterEdit (event)
-{
+function onEnterEdit(event) {
     if (event.key === "Enter") {
         event.preventDefault();
         event.target.blur();
     }
 }
 
-function boardOnEnterEdit (event)
-{
-    if (event.key === "Enter") {
-        event.preventDefault();
-        event.target.blur();
-    }
-}
-
-function boardOnBLurEdit ()
-{
+function boardOnBLurEdit() {
     currentBoard[0].title = boardTitle.innerHTML;
     sendBoardEditRequest();
 }
 
-function headingEditedAndLeftWithoutSubmission()
-{
-    console.log(this);
-    let listIndex = this.dataset.listIndex;
-    console.log('index' + this.dataset.listIndex);
-    listsArray[listIndex].title = this.innerHTML;
-    console.log('innerhtml' + this.innerHTML);
-}
-
-function cardOnMouseOver()
-{
+function cardOnMouseOver() {
     document.getElementById('delete' + this.dataset.card_index).style.display = 'block';
     document.getElementById('edit' + this.dataset.card_index).style.display = 'block';
 }
 
-function cardOnMouseOut()
-{
+function cardOnMouseOut() {
     document.getElementById('delete' + this.dataset.card_index).style.display = 'none';
     document.getElementById('edit' + this.dataset.card_index).style.display = 'none';
 }
 
 const cardOnClickToEdit = (event) => {
+    console.log(event);
     event.target.classList.remove("edit-button");
     event.target.classList.add('edit-button-invisible');
     event.target.parentElement.children[3].classList.remove("delete-button");
@@ -279,25 +306,23 @@ const cardOnClickToEdit = (event) => {
     cardForEdit.children[0].contentEditable = true;
     cardForEdit.children[0].focus();
 
+    console.log(event.target.parentElement.children[2]);
     event.target.parentElement.children[2].addEventListener('click', checkPressed);
     event.target.parentElement.children[0].addEventListener('blur', editFieldLeftWithoutSubmission);
 };
 
-function checkPressed()
-{
+function checkPressed() {
+    console.log("cia iej");
+    this.style.display = "none";
     this.style.display = "none";
     this.parentElement.children[1].classList.remove("edit-button-invisible");
     this.parentElement.children[1].classList.add('edit-button');
     this.parentElement.children[3].classList.remove("delete-button-invisible");
     this.parentElement.children[3].classList.add('delete-button');
-    let editedCard = this.closest('.list-item');
-    editedCard.children[0].contentEditable = false;
-    let cardsArrayIndex = editedCard.dataset.card_index;
-    cardsArray[cardsArrayIndex].description = editedCard.children[0].innerHTML;
 }
 
-function editFieldLeftWithoutSubmission()
-{
+async function editFieldLeftWithoutSubmission() {
+    console.log('without submition');
     this.parentElement.children[2].style.display = 'none';
     this.parentElement.children[1].classList.remove("edit-button-invisible");
     this.parentElement.children[1].classList.add('edit-button');
@@ -306,36 +331,31 @@ function editFieldLeftWithoutSubmission()
 
     this.contentEditable = false;
     let cardsArrayIndex = this.parentElement.dataset.card_index;
-    cardsArray[cardsArrayIndex].description = this.innerHTML;
+    cardsArray[cardsArrayIndex].text = this.innerHTML;
+    await sendCardEditRequest(cardsArray[cardsArrayIndex].id, cardsArray[cardsArrayIndex].text);
 }
 
-function cardOnClickToDelete()
-{
+async function cardOnClickToDelete() {
     let cardsArrayIndex = this.parentElement.dataset.card_index;
+    await sendCardDeleteRequest(cardsArray[cardsArrayIndex].id);
     delete cardsArray[cardsArrayIndex];
-    display_list();
+    this.parentElement.remove();
 }
 
-function biggestListId()
-{
+function biggestListId() {
     let biggestId = 0;
-    for(let i = 0; i < listsArray.length; i++)
-    {
-        if(listsArray[i].id > biggestId)
-        {
+    for (let i = 0; i < listsArray.length; i++) {
+        if (listsArray[i].id > biggestId) {
             biggestId = listsArray[i].id;
         }
     }
     return biggestId;
 }
 
-function listIndexInListArray(id)
-{
+function listIndexInListArray(id) {
     let arrayIndex = 0;
-    for(let i = 0; i < listsArray.length; i++)
-    {
-        if(listsArray[i].id == id)
-        {
+    for (let i = 0; i < listsArray.length; i++) {
+        if (listsArray[i].id === id) {
             arrayIndex = i;
             break;
         }
@@ -346,19 +366,19 @@ function listIndexInListArray(id)
 async function init() {
     await getBoardByIdFromDatabase();
     await getAllTablesByBoard();
+    await getAllCardsByTable();
+
     boardTitle.innerHTML = currentBoard[0].title;
     display_list();
 }
 
-function display_list()
-{
-    //isvalo visa lauka
+function display_list() {
     listsContainerHtml.innerHTML = "";
 
     boardTitle.addEventListener('blur', boardOnBLurEdit);
-    boardTitle.addEventListener('keydown', boardOnEnterEdit);
+    boardTitle.addEventListener('keydown', onEnterEdit);
 
-    for(let i = 0; i < listsArray.length; i++) {
+    for (let i = 0; i < listsArray.length; i++) {
         let list_placeholders = document.createElement("div");
         list_placeholders.className = 'list_placeholders';
         listsContainerHtml.appendChild(list_placeholders);
@@ -381,67 +401,14 @@ function display_list()
         list.appendChild(heading);
 
         heading.addEventListener('blur', listOnBlurEdit);
-        heading.addEventListener('keydown', listOnEnterEdit);
+        heading.addEventListener('keydown', onEnterEdit);
         // heading.addEventListener('click', headingOnClickToEdit);
 
         listsHtml = document.querySelectorAll('.list');
 
         for (let j = 0; j < cardsArray.length; j++) {
-            if (cardsArray[j] && cardsArray[j].list_id == listsArray[i].id) {
-
-                let place = listIndexInListArray(cardsArray[j].list_id);
-
-                let create_record = document.createElement("div");
-                create_record.draggable = true;
-                create_record.contentEditable = false;
-                create_record.className = 'list-item';
-                create_record.dataset.id = cardsArray[j].list_id;
-                create_record.dataset.card_index = j;
-                listsHtml[place].appendChild(create_record);
-
-                let cardText = document.createElement("div");
-                cardText.innerHTML = cardsArray[j].description;
-                cardText.contentEditable = false;
-                cardText.className = 'list-item-text';
-                cardText.dataset.id = cardsArray[j].list_id;
-                cardText.dataset.card_index = j;
-                create_record.appendChild(cardText);
-
-                create_record.addEventListener('dragstart', dragStart);
-                create_record.addEventListener('dragend', dragEnd);
-
-                let createEditButton = document.createElement("i");
-                createEditButton.className = "fa fa-pencil-square-o";
-                createEditButton.contentEditable = false;
-                createEditButton.dataset.id = cardsArray[j].list_id;
-                createEditButton.classList.add('edit-button');
-                createEditButton.id = 'edit' + j;
-                create_record.appendChild(createEditButton);
-
-                let createCheckButton = document.createElement("i");
-                createCheckButton.className = "fa fa-check";
-                createCheckButton.classList.add('check-button');
-                createCheckButton.dataset.id = cardsArray[j].list_id;
-                createCheckButton.contentEditable = false;
-                createCheckButton.id = 'check' + j;
-                create_record.appendChild(createCheckButton);
-
-                let createDeleteButton = document.createElement("i");
-                createDeleteButton.className = "fa fa-trash-o";
-                createDeleteButton.classList.add('delete-button');
-                createDeleteButton.dataset.id = cardsArray[j].list_id;
-                createDeleteButton.contentEditable = false;
-                createDeleteButton.id = 'delete' + j;
-                create_record.appendChild(createDeleteButton);
-
-                createDeleteButton.addEventListener('click', cardOnClickToDelete);
-                createEditButton.addEventListener('click', cardOnClickToEdit);
-                create_record.addEventListener('mouseover', cardOnMouseOver);
-                create_record.addEventListener('mouseout', cardOnMouseOut);
-
-                createCheckButton.style.display = 'none';
-                createEditButton.style.display = 'none';
-                createDeleteButton.style.display = 'none';
+            if (cardsArray[j] && cardsArray[j].list_id === listsArray[i].id) {
+                displayCard(cardsArray[j], j);
             }
         }
     }
@@ -452,8 +419,7 @@ function display_list()
     insert_new_task();
 }
 
-function insert_new_list()
-{
+function insert_new_list() {
     let new_list_input_container = document.createElement("div");
     new_list_input_container.className = 'new-list-input-container';
     listsContainerHtml.appendChild(new_list_input_container);
@@ -468,21 +434,18 @@ function insert_new_list()
     write_list.addEventListener("keydown", async function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            if(event.target.value) {
-                let list_name = event.target.value;
-
-                await sendTableAddRequest(list_name);
-
+            if (event.target.value) {
+                event.target.disabled = true;
+                await sendTableAddRequest(event.target.value);
+                event.target.disabled = false;
                 listsContainerHtml.innerHTML = '';
-
                 display_list();
             }
         }
     });
 }
 
-function insert_new_task()
-{
+function insert_new_task() {
     listsPlaceholdersHtml = document.querySelectorAll('.list_placeholders');
     for (let i = 0; i < listsPlaceholdersHtml.length; i++) {
         let taskInputContainer = document.createElement("div");
@@ -497,25 +460,77 @@ function insert_new_task()
         taskInputContainer.appendChild(write_record);
 
 
-        write_record.addEventListener("keydown", function(event) {
+        write_record.addEventListener("keydown", async function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
+
                 if (event.target.value) {
-                    let description = event.target.value;
-                    let id = event.target.getAttribute('data-id');
-
+                    event.target.disabled = true;
+                    await sendCardAddRequest(event.target.getAttribute('data-id'), event.target.value);
+                    event.target.disabled = false;
                     event.target.value = '';
-
-                    cardsArray.push({
-                        description: description,
-                        list_id: id,
-                    });
-                    display_list();
+                    // display_list();
+                    displayCard(cardsArray[cardsArray.length - 1], cardsArray.length - 1);
                 }
             }
         });
     }
 }
 
+function displayCard(card, index) {
+    let place = listIndexInListArray(card.list_id);
+
+    let create_record = document.createElement("div");
+    create_record.draggable = true;
+    create_record.contentEditable = false;
+    create_record.className = 'list-item';
+    create_record.dataset.id = card.list_id;
+    create_record.dataset.card_index = index;
+    listsHtml[place].appendChild(create_record);
+
+    let cardText = document.createElement("div");
+    cardText.innerHTML = card.text;
+    cardText.contentEditable = false;
+    cardText.className = 'list-item-text';
+    cardText.dataset.id = card.list_id;
+    cardText.dataset.card_index = index;
+    create_record.appendChild(cardText);
+
+    create_record.addEventListener('dragstart', dragStart);
+    create_record.addEventListener('dragend', dragEnd);
+
+    let createEditButton = document.createElement("i");
+    createEditButton.className = "fa fa-pencil-square-o";
+    createEditButton.contentEditable = false;
+    createEditButton.dataset.id = card.list_id;
+    createEditButton.classList.add('edit-button');
+    createEditButton.id = 'edit' + index;
+    create_record.appendChild(createEditButton);
+
+    let createCheckButton = document.createElement("i");
+    createCheckButton.className = "fa fa-check";
+    createCheckButton.classList.add('check-button');
+    createCheckButton.dataset.id = card.list_id;
+    createCheckButton.contentEditable = false;
+    createCheckButton.id = 'check' + index;
+    create_record.appendChild(createCheckButton);
+
+    let createDeleteButton = document.createElement("i");
+    createDeleteButton.className = "fa fa-trash-o";
+    createDeleteButton.classList.add('delete-button');
+    createDeleteButton.dataset.id = card.list_id;
+    createDeleteButton.contentEditable = false;
+    createDeleteButton.id = 'delete' + index;
+    create_record.appendChild(createDeleteButton);
+
+    createDeleteButton.addEventListener('click', cardOnClickToDelete);
+    createEditButton.addEventListener('click', cardOnClickToEdit);
+    create_record.addEventListener('mouseover', cardOnMouseOver);
+    create_record.addEventListener('mouseout', cardOnMouseOut);
+
+    createCheckButton.style.display = 'none';
+    createEditButton.style.display = 'none';
+    createDeleteButton.style.display = 'none';
+}
+
 init();
-// display_list();

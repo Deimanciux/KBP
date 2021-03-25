@@ -54,6 +54,6 @@ class TableRepository extends ServiceEntityRepository
             ->orderBy('s.place', 'ASC')
             ->getQuery()
             ->getArrayResult()
-            ;
+        ;
     }
 }

@@ -31,6 +31,13 @@ class Card
     private $table;
 
     /**
+     * @ORM\Column(type="integer", length=2)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=50)
+     */
+    private $place;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -70,5 +77,21 @@ class Card
         $this->table = $table;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * @param mixed $place
+     */
+    public function setPlace($place): void
+    {
+        $this->place = $place;
     }
 }
