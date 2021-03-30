@@ -6,8 +6,6 @@ use App\Repository\BoardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BoardRepository::class)
@@ -23,10 +21,13 @@ class Board
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=100)
      */
     private $boardTitle;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $image;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Table", mappedBy="board")
@@ -107,5 +108,21 @@ class Board
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
     }
 }

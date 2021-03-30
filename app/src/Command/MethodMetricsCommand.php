@@ -10,7 +10,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class MethodMetricsCommand extends Command
 {
-    protected static $defaultName = 'app:method-metrics';
+    protected static $defaultName = 'command:method-metrics';
     private $projectDir;
 
     public function __construct($projectDir)
@@ -35,7 +35,7 @@ class MethodMetricsCommand extends Command
             $this->dumpSummary($array, $metric);
         }
         catch (\Exception $exception) {
-            VarDumper::dump("Metric with given name ' $metric ' not found, try to use app:help to see all metrics");
+            VarDumper::dump("Metric with given name ' $metric ' not found, try to use command:help to see all metrics");
         }
 
         return 0;

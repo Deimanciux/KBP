@@ -1,22 +1,24 @@
-<nav class="navbar navbar-dark navbar-expand-md sticky-top bg-dark p-0">
-    <a class="navbar-brand col-sm-3 col-md-1 mr-0"
-       href="{{ path('index_page') }}">Kanban Board</a>
-
-    <div class="w-100 order-1 order-md-0">
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                {%  if(is_granted("ROLE_USER")) %}
-                    <div id="board-title" contenteditable="true">
-                        Create a title for your board
-                    </div>
-                {% endif %}
-            </li>
-        </ul>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top p-0">
+    <div class="navbar-brand col-4">
+        <a class="col-2 col-sm-2 col-md-2 mr-0" id="home-link" href="{{ path('index_page') }}">Kanban Board</a>
+        {%  if(is_granted("ROLE_USER") and app.request.get('_route') == 'main_page') %}
+            <input class="col-2 col-sm-2 col-md-2 col-lg-8" id="board-title" contenteditable="true" data-max-length="35" placeholder="Board name" maxlength="35">
+        {% endif %}
     </div>
 
-    <div class="order-2 order-md-1">
-        <ul class="navbar-nav px-3">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             {% if is_granted('ROLE_USER') %}
+                {% if app.request.get('_route') == 'main_page' %}
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link"
+                           href="{{ path('index_page') }}">Boards</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item text-nowrap">
                     <a class="nav-link"
                        href="#">{{ app.user.username }} </a>

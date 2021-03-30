@@ -81,7 +81,6 @@ body, .login_container, .row {
   outline: none;
 }
 
-
 .input-container{
 
   padding: 8px;
@@ -129,10 +128,16 @@ body, .login_container, .row {
 }
 
 .list-heading {
-  margin: 6px 2px 2px 2px;
   font-size: large;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.8);
+  resize: none;
+  background-color: rgb(203,199,197);
+}
+
+.list-heading:focus {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgb(203,199,197);
 }
 
 .delete-button {
@@ -167,6 +172,7 @@ body, .login_container, .row {
   margin: 4px;
   padding: 3px;
 }
+
 .edit-button-invisible {
   position:absolute;
   top: 0;
@@ -212,4 +218,20 @@ body, .login_container, .row {
 
 #board-title {
   color: whitesmoke;
+  font-size: medium;
+  background-color: rgb(52,58,64);
+  border:none;
+}
+
+#home-link {
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+textarea, input {
+  outline: none;
+}
+
+.board-column {
+  height: 7em;
 }

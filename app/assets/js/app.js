@@ -1,21 +1,43 @@
 const listsContainerHtml = document.getElementById('lists'); //container for all lists in page
+const BOARD_TITLE_MAX_LENGTH = 35;
+const LIST_TITLE_MAX_LENGTH = 100;
+const CARD_TEXT_MAX_LENGTH = 400;
 let listsPlaceholdersHtml = document.querySelectorAll('.list_placeholders'); //placeholders of specific lists
 let listsHtml = document.querySelectorAll('.list'); //sarasai html pavidalu
 let cardsHtml = document.querySelectorAll('.list-item'); //korteliu html
 let draggedItem = null; //tempiamas elementas
 let dragBox = null; //vieta i kuria tempiamas elementas
-let cardsArray = []; //visu korteliu masyvas kuriame korteles pavadinimas ir saraso id
-
+let cardsArray = [];
 let currentBoard = [];
 let boards = [];
 let boardTitle = document.getElementById('board-title');
-
 let listsArray = [];
+
+// used temporary
+let boardId = document.getElementById('lists').dataset.board_id;
+
+
+jQuery.fn.extend({
+    autoHeight: function () {
+        function autoHeight_(element) {
+            return jQuery(element).css({
+                'height': 'auto',
+                'overflow-y': 'hidden'
+            }).height(element.scrollHeight);
+        }
+        return this.each(function () {
+            autoHeight_(this).on('input', function () {
+                autoHeight_(this);
+            });
+        });
+    }
+});
+
 
 async function getBoardByIdFromDatabase() {
     await jQuery.ajax({
         method: "GET",
-        url: "/board/1",
+        url: "/board/get/" + boardId,
         dataType: 'json',
 
         success: function (response) {
@@ -111,6 +133,15 @@ async function sendTableEditRequest(index, title) {
     });
 }
 
+function getListTitle(id) {
+
+    for (let i = 0; i < listsArray.length; i++) {
+        if (listsArray[i].id == id) {
+            return listsArray[i].title;
+        }
+    }
+}
+
 function setListTitle(response) {
     for (let i = 0; i < listsArray.length; i++) {
         if (listsArray[i].id === response.id) {
@@ -168,6 +199,20 @@ async function sendCardEditRequest(index, text) {
     });
 }
 
+async function sendCardPositionEditRequest(card_id, table_id) {
+    await $.ajax({
+        method: "PATCH",
+        url: "/card/" + card_id + "/table/" + table_id,
+        dataType: 'json',
+        success: function (response) {
+
+        },
+        error: function (response) {
+
+        }
+    });
+}
+
 async function sendCardDeleteRequest(index) {
     await $.ajax({
         method: "DELETE",
@@ -182,21 +227,42 @@ async function sendCardDeleteRequest(index) {
     });
 }
 
+// function getDragBox(event) {
+//
+//     if (event.target.tagName === 'H3') {
+//         dragBox = event.target.parentElement;
+//     } else if (event.target.tagName === 'DIV' && event.target.className === 'list-item-text') {
+//         dragBox = event.target.parentElement.parentElement;
+//     } else if (event.target.tagName === 'DIV' && event.target.children[0].tagName === 'INPUT') {
+//         dragBox = event.target.parentElement.children[0];
+//     } else if (event.target.tagName === 'INPUT') {
+//         dragBox = event.target.parentElement.parentElement.children[0];
+//     } else if (event.target.tagName === 'DIV' && event.target.className === 'list') {
+//         dragBox = event.target;
+//     } else if (event.target.tagName === 'DIV' && event.target.className === 'list-item') {
+//         dragBox = event.target.parentElement;
+//     } else if (event.target.tagName === 'DIV' && event.target.className === 'list_placeholders') {
+//         dragBox = event.target.children[0];
+//     } else {
+//         dragBox = null;
+//     }
+// }
+
 function getDragBox(event) {
 
-    if (event.target.tagName == 'H3') {
+    if (event.target.tagName === 'H3') {
         dragBox = event.target.parentElement;
-    } else if (event.target.tagName == 'DIV' && event.target.className == 'list-item-text') {
+    } else if (event.target.tagName === 'DIV' && event.target.className === 'list-item-text') {
         dragBox = event.target.parentElement.parentElement;
-    } else if (event.target.tagName == 'DIV' && event.target.children[0].tagName == 'INPUT') {
+    } else if (event.target.tagName === 'DIV' && event.target.children[0].tagName === 'INPUT') {
         dragBox = event.target.parentElement.children[0];
-    } else if (event.target.tagName == 'INPUT') {
+    } else if (event.target.tagName === 'INPUT') {
         dragBox = event.target.parentElement.parentElement.children[0];
-    } else if (event.target.tagName == 'DIV' && event.target.className == 'list') {
+    } else if (event.target.tagName === 'DIV' && event.target.className === 'list') {
         dragBox = event.target;
-    } else if (event.target.tagName == 'DIV' && event.target.className == 'list-item') {
+    } else if (event.target.tagName === 'DIV' && event.target.className === 'list-item') {
         dragBox = event.target.parentElement;
-    } else if (event.target.tagName == 'DIV' && event.target.className == 'list_placeholders') {
+    } else if (event.target.tagName === 'DIV' && event.target.className === 'list_placeholders') {
         dragBox = event.target.children[0];
     } else {
         dragBox = null;
@@ -211,14 +277,17 @@ const dragStart = (event) => {
     }, 0);
 };
 
-const dragEnd = (event) => {
+async function dragEnd (event) {
     event.preventDefault();
-    setTimeout(function () {
+    setTimeout(async function () {
+        console.log('kada trigeris suveikia');
         event.target.style.display = 'block';
-        cardsArray[event.target.dataset.card_index].list_id = event.target.parentElement.dataset.id;
+        let cardId = event.target.dataset.card_index;
+        await sendCardPositionEditRequest(cardsArray[cardId].id, event.target.parentElement.dataset.id);
+        cardsArray[cardId].list_id = event.target.parentElement.dataset.id;
         event.target = null;
     }, 0);
-};
+}
 
 //sarasui
 const dragOver = (event) => {
@@ -266,8 +335,17 @@ const dragDrop = (event) => {
     }
 };
 
-async function listOnBlurEdit(event) {
-    await sendTableEditRequest(this.dataset.listIndex, this.innerHTML);
+async function listOnBlurEdit() {
+    if (!this.value || (this.value.length > LIST_TITLE_MAX_LENGTH)) {
+        this.value = getListTitle(this.dataset.listIndex);
+        return;
+    }
+
+    if(this.value === getListTitle(this.dataset.listIndex)) {
+        return;
+    }
+
+    await sendTableEditRequest(this.dataset.listIndex, this.value);
 }
 
 function onEnterEdit(event) {
@@ -278,7 +356,16 @@ function onEnterEdit(event) {
 }
 
 function boardOnBLurEdit() {
-    currentBoard[0].title = boardTitle.innerHTML;
+    if (!boardTitle.value || (boardTitle.value > BOARD_TITLE_MAX_LENGTH)) {
+        boardTitle.value = currentBoard[0].title;
+        return;
+    }
+
+    if(currentBoard[0].title === boardTitle.value) {
+        return;
+    }
+
+    currentBoard[0].title = boardTitle.value;
     sendBoardEditRequest();
 }
 
@@ -293,63 +380,61 @@ function cardOnMouseOut() {
 }
 
 const cardOnClickToEdit = (event) => {
-    console.log(event);
-    event.target.classList.remove("edit-button");
-    event.target.classList.add('edit-button-invisible');
-    event.target.parentElement.children[3].classList.remove("delete-button");
-    event.target.parentElement.children[3].classList.add('delete-button-invisible');
+    event.target.style.visibility = 'hidden';
+    event.target.parentElement.children[3].style.visibility = 'hidden';
 
     let cardForEdit = event.target.closest('.list-item');
 
     event.target.parentElement.children[2].style.display = 'block';
-
+    event.target.parentElement.draggable = false;
     cardForEdit.children[0].contentEditable = true;
+    console.log(cardForEdit);
+    console.log(event.target.parentElement);
+
     cardForEdit.children[0].focus();
 
-    console.log(event.target.parentElement.children[2]);
     event.target.parentElement.children[2].addEventListener('click', checkPressed);
-    event.target.parentElement.children[0].addEventListener('blur', editFieldLeftWithoutSubmission);
+    cardForEdit.children[0].addEventListener('blur', editFieldLeftWithoutSubmission);
 };
 
 function checkPressed() {
-    console.log("cia iej");
     this.style.display = "none";
-    this.style.display = "none";
-    this.parentElement.children[1].classList.remove("edit-button-invisible");
-    this.parentElement.children[1].classList.add('edit-button');
-    this.parentElement.children[3].classList.remove("delete-button-invisible");
-    this.parentElement.children[3].classList.add('delete-button');
+    this.parentElement.children[1].style.visibility = 'visible';
+    this.parentElement.children[3].style.visibility = 'visible';
+    this.parentElement.draggable = true;
+    this.parentElement.children[0].contentEditable = false;
 }
 
 async function editFieldLeftWithoutSubmission() {
-    console.log('without submition');
     this.parentElement.children[2].style.display = 'none';
-    this.parentElement.children[1].classList.remove("edit-button-invisible");
-    this.parentElement.children[1].classList.add('edit-button');
-    this.parentElement.children[3].classList.remove("delete-button-invisible");
-    this.parentElement.children[3].classList.add('delete-button');
+    this.parentElement.children[1].style.visibility = 'visible';
+    this.parentElement.children[3].style.visibility = 'visible';
 
     this.contentEditable = false;
+    this.parentElement.draggable = true;
+
     let cardsArrayIndex = this.parentElement.dataset.card_index;
+
+    if(!this.innerHTML) {
+        this.innerHTML = cardsArray[cardsArrayIndex].text;
+        return;
+    }
+
+    if(this.innerHTML === cardsArray[cardsArrayIndex].text) {
+        return;
+    }
+
     cardsArray[cardsArrayIndex].text = this.innerHTML;
     await sendCardEditRequest(cardsArray[cardsArrayIndex].id, cardsArray[cardsArrayIndex].text);
 }
 
 async function cardOnClickToDelete() {
     let cardsArrayIndex = this.parentElement.dataset.card_index;
+    this.parentElement.children[1].style.display = "none";
+    this.parentElement.children[3].style.display = "none";
+    this.parentElement.remove();
     await sendCardDeleteRequest(cardsArray[cardsArrayIndex].id);
     delete cardsArray[cardsArrayIndex];
-    this.parentElement.remove();
-}
-
-function biggestListId() {
-    let biggestId = 0;
-    for (let i = 0; i < listsArray.length; i++) {
-        if (listsArray[i].id > biggestId) {
-            biggestId = listsArray[i].id;
-        }
-    }
-    return biggestId;
 }
 
 function listIndexInListArray(id) {
@@ -368,7 +453,7 @@ async function init() {
     await getAllTablesByBoard();
     await getAllCardsByTable();
 
-    boardTitle.innerHTML = currentBoard[0].title;
+    boardTitle.value = currentBoard[0].title;
     display_list();
 }
 
@@ -393,16 +478,20 @@ function display_list() {
         list_placeholders.addEventListener('dragleave', dragLeave);
         list_placeholders.addEventListener('drop', dragDrop);
 
-        let heading = document.createElement("h3");
-        heading.innerHTML = listsArray[i].title;
+        let heading = document.createElement("textarea");
+        heading.value = listsArray[i].title;
         heading.className = 'list-heading';
-        heading.contentEditable = true;
+        heading.classList.add('form-control');
+        heading.classList.add('border-0');
+        heading.maxLength = LIST_TITLE_MAX_LENGTH;
+        heading.rows = 1;
+
         heading.dataset.listIndex = listsArray[i].id;
         list.appendChild(heading);
 
         heading.addEventListener('blur', listOnBlurEdit);
         heading.addEventListener('keydown', onEnterEdit);
-        // heading.addEventListener('click', headingOnClickToEdit);
+
 
         listsHtml = document.querySelectorAll('.list');
 
@@ -412,6 +501,7 @@ function display_list() {
             }
         }
     }
+    $('.list-heading').autoHeight();
     cardsHtml = document.querySelectorAll('.list-item');
 
     insert_new_list();
@@ -424,13 +514,11 @@ function insert_new_list() {
     new_list_input_container.className = 'new-list-input-container';
     listsContainerHtml.appendChild(new_list_input_container);
 
-    //kad po visais sarasais leistu sukurti nauja sarasa
     let write_list = document.createElement("div");
     write_list.className = 'input-container';
     write_list.innerHTML = "<input class = 'input_item' type = 'text' placeholder = '+ Make new list'>";
     new_list_input_container.appendChild(write_list);
 
-//kad paspaudus enter submitintu, sukurtu masyve nauja sarasa
     write_list.addEventListener("keydown", async function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -469,7 +557,6 @@ function insert_new_task() {
                     await sendCardAddRequest(event.target.getAttribute('data-id'), event.target.value);
                     event.target.disabled = false;
                     event.target.value = '';
-                    // display_list();
                     displayCard(cardsArray[cardsArray.length - 1], cardsArray.length - 1);
                 }
             }
@@ -495,6 +582,18 @@ function displayCard(card, index) {
     cardText.dataset.id = card.list_id;
     cardText.dataset.card_index = index;
     create_record.appendChild(cardText);
+
+    // let cardText = document.createElement("textarea");
+    // cardText.value = card.text;
+    // cardText.maxLength = CARD_TEXT_MAX_LENGTH;
+    // cardText.className = 'list-item-text';
+    // cardText.classList.add('form-control');
+    // cardText.classList.add('border-0');
+    // cardText.classList.add('pt-4');
+    // cardText.rows = 1;
+    // cardText.dataset.id = card.list_id;
+    // cardText.dataset.card_index = index;
+    // create_record.appendChild(cardText);
 
     create_record.addEventListener('dragstart', dragStart);
     create_record.addEventListener('dragend', dragEnd);
@@ -531,6 +630,7 @@ function displayCard(card, index) {
     createCheckButton.style.display = 'none';
     createEditButton.style.display = 'none';
     createDeleteButton.style.display = 'none';
+    // $('.list-item-text').autoHeight();
 }
 
 init();

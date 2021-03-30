@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 align-self-start mt-5  mb-2">
+                <h3>Choose your board</h3>
+            </div>
+        </div>
+        <div class="row">
+            {% for board in boards %}
+                <div class = "col-3 p-2">
+                    <a class="link-to-status-page"  href="{{ path('main_page', {'id' : board.id}) }}">
+                        <div class="card text-white bg-dark" style="background-image: url('{{ asset('build/' ~ board.image) }}'); background-size: cover; height: 100%; width: 100%; background-repeat: no-repeat;">
+
+                            <div class="card-body board-column">
+                                <h6 class="card-title">{{ board.boardTitle }}</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            <div class = "col-3 p-2">
+                <a>
+                    <div class="card text-white bg-secondary mb-3">
+                        <div class="card-body board-column">
+                            <h6 class="card-title">+Add Project</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        </div>
+{% endblock %}

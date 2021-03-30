@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96d1520f0d94a3aa3e8d8ac9ca7c9d42",
+    "content-hash": "14e880fe6c01044e7f9e6e60f8797a88",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2220,7 +2220,7 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v5.2.3",
+            "version": "v5.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
@@ -2269,7 +2269,7 @@
             "description": "Manages URL generation and versioning of web assets such as CSS stylesheets, JavaScript files and image files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/asset/tree/v5.2.3"
+                "source": "https://github.com/symfony/asset/tree/v5.2.4"
             },
             "funding": [
                 {
@@ -7221,6 +7221,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.2.5",
+        "ext-simplexml": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "^7.4"

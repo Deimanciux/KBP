@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class HelpCommand extends Command
 {
-    protected static $defaultName = 'app:help';
+    protected static $defaultName = 'command:help';
     private $projectDir;
 
     public function __construct($projectDir)
@@ -34,7 +34,7 @@ class HelpCommand extends Command
     private function showMethodRelatedMetrics() {
         echo("\n");
         echo("----------Method related metrics-----------------\n");
-        echo("For method metrics write app:method-metrics [attribute from below]\n");
+        echo("For method metrics write command:method-metrics [attribute from below]\n");
         echo("ccn    - Cyclomatic Complexity Number\n");
         echo("ccn2   - Extended Cyclomatic Complexity Number\n");
         echo("cloc   - Comment Lines of Code\n");
@@ -58,7 +58,7 @@ class HelpCommand extends Command
     private function showObjectRelatedMetrics() {
         echo("\n");
         echo("----------Object oriented metrics-----------------\n");
-        echo("For object oriented metrics write app:object-metrics [attribute from below]\n");
+        echo("For object oriented metrics write command:object-metrics [attribute from below]\n");
         echo("ca      - Afferent Coupling\n");
         echo("cbo     - Coupling Between Objects \n");
         echo("ce      - Efferent Coupling\n");

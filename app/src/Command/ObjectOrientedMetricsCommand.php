@@ -10,7 +10,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class ObjectOrientedMetricsCommand extends Command
 {
-    protected static $defaultName = 'app:object-metrics';
+    protected static $defaultName = 'command:object-metrics';
     private $projectDir;
 
     public function __construct($projectDir)
@@ -34,7 +34,7 @@ class ObjectOrientedMetricsCommand extends Command
         try {
             $this->dumpSummary($array, $metric);
         } catch (\Exception $exception) {
-            VarDumper::dump("Metric with given short name ' $metric ' not found, try to use app:help to see all metrics" );
+            VarDumper::dump("Metric with given short name ' $metric ' not found, try to use command:help to see all metrics" );
         }
 
         return 0;

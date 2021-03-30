@@ -44,20 +44,6 @@ class CardController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete_card", methods={"DELETE"})
-     * @param Card $card
-     * @return JsonResponse
-     */
-    public function deleteCard(Card $card)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($card);
-        $em->flush();
-
-        return $this->json(['success' => true], Response::HTTP_ACCEPTED);
-    }
-
-    /**
      * @Route("/{id}", name="add_card", methods={"POST"})
      * @param Table $table
      * @param Request $request
@@ -83,6 +69,39 @@ class CardController extends AbstractController
             'text' => $card->getText(),
             'place' => $card->getPlace(),
             'list_id' => $card->getTable()->getId()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete_card", methods={"DELETE"})
+     * @param Card $card
+     * @return JsonResponse
+     */
+    public function deleteCard(Card $card)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($card);
+        $em->flush();
+
+        return $this->json(['success' => true], Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * @Route("/{card}/table/{table}", name="edit_card_position", methods={"PATCH"})
+     * @param Card $card
+     * @param Table $table
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function editCardPosition(Card $card, Table $table, Request $request)
+    {
+        $card->setTable($table);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->json([
+            'card_id' => $card->getId(),
+            'table_id' => $table->getId(),
         ]);
     }
 }
