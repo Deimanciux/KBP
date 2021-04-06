@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 body, .login_container, .row {
   width: 100%;
 }
@@ -18,7 +22,6 @@ body, .login_container, .row {
 
 .app {
   height: 96vh;
-  background-image: url("../images/9.jpg");
   background-color: rgb(255,250,247);
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -26,15 +29,15 @@ body, .login_container, .row {
   transition: all 0.2s linear;
   flex-flow: column;
   font-family: 'Roboto', Helvetica, sans-serif;
-  overflow-y: auto;
+  //overflow-y: auto;
 }
 
 #lists {
-  height: 96vh;
+  //height: 96vh;
   display: flex;
   flex: 1;
   width: 100%;
-  overflow-y: auto;
+  //overflow-y: auto;
 }
 
 #lists .list_placeholders {
@@ -59,7 +62,7 @@ body, .login_container, .row {
   height: auto;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 8px 8px 0 8px;
   transition: all 0.2s linear;
 }
@@ -73,7 +76,7 @@ body, .login_container, .row {
   margin: 6px 0 4px 0;
   min-width: 150px;
   max-width: 300px;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(0, 0, 0, 1);
   overflow-wrap: break-word;
 }
 
@@ -82,15 +85,15 @@ body, .login_container, .row {
 }
 
 .input-container{
-
   padding: 8px;
   width: 100%;
   min-width: 150px;
   max-width: 300px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
 .new-list-input-container{
   padding: 8px;
   min-width: 150px;
@@ -111,7 +114,7 @@ body, .login_container, .row {
 }
 
 .input_item:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 }
 
@@ -128,16 +131,17 @@ body, .login_container, .row {
 }
 
 .list-heading {
-  font-size: large;
+  padding: 5px 5px 0 5px;
+  font-size: medium;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.8);
+  color: white;
   resize: none;
-  background-color: rgb(203,199,197);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .list-heading:focus {
-  color: rgba(0, 0, 0, 0.8);
-  background-color: rgb(203,199,197);
+  color: rgba(0, 0, 0, 1);
+  background-color: whitesmoke;
 }
 
 .delete-button {
@@ -216,16 +220,26 @@ body, .login_container, .row {
   border-color: #6c757d;
 }
 
+//#board-title {
+//  color: whitesmoke;
+//  font-size: medium;
+//  background-color: rgb(52,58,64);
+//  border:none;
+//}
+
 #board-title {
   color: whitesmoke;
   font-size: medium;
-  background-color: rgb(52,58,64);
+  background-color: rgba(0, 0, 0, 0.5);
   border:none;
+}
+
+#board-title::placeholder {
+  color: whitesmoke;
 }
 
 #home-link {
   color: whitesmoke;
-  text-decoration: none;
 }
 
 textarea, input {
@@ -234,4 +248,46 @@ textarea, input {
 
 .board-column {
   height: 7em;
+}
+
+.board-card {
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  border:none;
+}
+
+.board-card:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#add-board-card {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+#add-board-card:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.background-select {
+  width: 3em;
+  height: 3em;
+  border-radius: 3px;
+  background-size: cover;
+  margin: 3px;
+  border: none;
+}
+
+.selected {
+  //border: 2px solid darkslategray;
+}
+
+body {
+  background-color: ghostwhite;
+}
+
+.navbar-custom {
+  height: 4vh;
 }

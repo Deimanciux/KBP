@@ -1,0 +1,52 @@
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Create your new board</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                {{ form_start(form) }}
+                {{ form_row(form.title) }}
+
+                <div
+                {{ stimulus_controller('background-select', {
+                    'background-id' : 0
+                }) }}
+                >
+                    {{ form_row(form.image, {
+                        'attr' : { 'data-background-select-target' : 'select' },
+                        'row_attr' : {'class' : 'mb-0' }
+                    }) }}
+
+                        <div class="row pl-3 h-100">
+                            {% for image in images %}
+                                <div
+                                    data-action="click->background-select#selectBackground"
+                                    data-background-select-target="background"
+                                    data-background-id = "{{ loop.index0 }}"
+                                    class="background-select"
+                                    style="background-image: linear-gradient(rgba(0, 0, 0, 0.1),
+                                            rgba(0, 0, 0, 0.1)),
+                                            url('{{ asset('build/' ~ image) }}');
+                                            text-align: center;
+                                            vertical-align:middle;"
+                                >
+                                    <i class="fa fa-check d-none" data-background-select-target="check" style="line-height: 3em; color: whitesmoke"></i>
+                                </div>
+                            {% endfor %}
+                        </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

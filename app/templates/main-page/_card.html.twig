@@ -1,0 +1,60 @@
+<div {{ stimulus_controller('card', {
+    'cardText' : card.text,
+    'editUrl' : path('edit_card', { id: card.id} )
+}) }} >
+    <div
+        class="list-item"
+        data-id = "{{ list.id }}"
+        data-card_index = "{{ card.id  }}"
+        data-action="dragstart->card#dragStart dragend->card#dragEnd mouseover->card#cardOnMouseOver mouseout->card#cardOnMouseOut"
+        data-card-target="listItem"
+        draggable = "true"
+        contentEditable = "false"
+    >
+        <div
+                class="list-item-text"
+                data-id = "{{ list.id }}"
+                data-card_index = "{{ card.id }}"
+                data-card-target="listItemText"
+                contentEditable = "false"
+        >{{ card.text }}</div>
+        <div>
+            <i
+                class="fa fa-pencil-square-o edit-button"
+                id = "edit {{ card.id }}"
+                data-action="click->card#cardOnClickToEdit"
+                data-id = "{{ list.id }}"
+                data-card-target = "edit"
+                contentEditable = "false"
+                style="display: none"
+            ></i>
+            <i
+                class="fa fa-check check-button"
+                id = "check {{ card.id }}"
+                data-id = "{{ list.id }}"
+                data-card-target = "check"
+                contentEditable = "false"
+                style="display: none"
+            ></i>
+            <i
+                class="fa fa-trash-o delete-button"
+                id = "delete {{ card.id }}"
+                data-action="click->card#cardOnClickToDelete"
+                data-card-target = "delete"
+                data-id = "{{ list.id }}"
+                contentEditable = "false"
+                style="display: none"
+            ></i>
+        </div>
+    </div>
+</div>
+
+
+{#createDeleteButton.addEventListener('click', cardOnClickToDelete);#}
+{#createEditButton.addEventListener('click', cardOnClickToEdit);#}
+{#create_record.addEventListener('mouseover', cardOnMouseOver);#}
+{#create_record.addEventListener('mouseout', cardOnMouseOut);#}
+
+{#createCheckButton.style.display = 'none';#}
+{#createEditButton.style.display = 'none';#}
+{#createDeleteButton.style.display = 'none';#}

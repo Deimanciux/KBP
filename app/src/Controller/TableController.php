@@ -56,7 +56,7 @@ class TableController extends AbstractController
      * @Route("/{id}", name="add_table", methods={"POST"})
      * @param Board $board
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function addTable(Board $board, Request $request)
     {
@@ -72,6 +72,15 @@ class TableController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($table);
         $em->flush();
+
+        if($data['preview'] == 1) {
+
+            return $this->json([
+                'body' =>  $this->renderView('main-page/_list.html.twig', [
+                    'list' => $table
+                ])
+            ]);
+        }
 
         return $this->json([
                 "id" => $table->getId(),

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,6 +29,11 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register", name="user_register")
+     * @param UserPasswordEncoderInterface $passwordEncoded
+     * @param Request $request
+     * @param TokenStorageInterface $tokenStorage
+     * @param SessionInterface $session
+     * @return RedirectResponse|Response
      */
     public function register(UserPasswordEncoderInterface $passwordEncoded, Request $request, TokenStorageInterface $tokenStorage, SessionInterface $session)
     {

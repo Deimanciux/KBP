@@ -17,7 +17,7 @@ class MainPageController extends AbstractController
     public function showMainPage(Board $board)
     {
         return $this->render('main-page/main-page.html.twig', [
-            'id' => $board->getId()
+            'board' => $board
         ]);
     }
 }

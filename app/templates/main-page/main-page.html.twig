@@ -1,7 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="app">
-        <div id="lists" data-board_id="{{ id }}"></div>
+    {#    // kaip buvo pries keiciant#}
+    {#    <div class="app">#}
+    {#        <div id="lists" data-board_id="{{ id }}"></div>#}
+    {#    </div>#}
+
+    {#    //pakeitus#}
+
+    <div class="app" style="background-image: url(' {{ asset('build/' ~ board.image) }} ');">
+        <div {{ stimulus_controller('board', {
+            'board-title' : board.title,
+            'editUrl' : path('edit_title', { id : board.id })
+        }) }}>
+            <input
+                    class="col-2 mt-2 ml-2"
+                    id="board-title"
+                    data-board-target="boardTitle"
+                    data-action="keydown->board#onEnterEdit blur->board#boardOnBLurEdit"
+                    value="{{ board.title }}"
+                    maxlength="35"
+                    autocomplete="off"
+            >
+        </div>
+
+        <div id="lists">
+            {% for list in board.tables %}
+                {{ include( 'main-page/_list.html.twig') }}
+            {% endfor %}
+
+            {{ include( 'main-page/_add-list.html.twig') }}
+        </div>
     </div>
 {% endblock %}

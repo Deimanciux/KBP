@@ -14,7 +14,7 @@ let boardTitle = document.getElementById('board-title');
 let listsArray = [];
 
 // used temporary
-let boardId = document.getElementById('lists').dataset.board_id;
+// let boardId = document.getElementById('lists').dataset.board_id;
 
 
 jQuery.fn.extend({
@@ -85,21 +85,21 @@ async function getAllTablesByBoard() {
     });
 }
 
-function sendBoardEditRequest() {
-    $.ajax({
-        method: "PATCH",
-        url: "/board/1",
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        data: JSON.stringify({title: currentBoard[0].title}),
-        success: function (response) {
-
-        },
-        error: function (response) {
-
-        }
-    });
-}
+// function sendBoardEditRequest() {
+//     $.ajax({
+//         method: "PATCH",
+//         url: "/board/1",
+//         contentType: "application/json; charset=utf-8",
+//         dataType: 'json',
+//         data: JSON.stringify({title: currentBoard[0].title}),
+//         success: function (response) {
+//
+//         },
+//         error: function (response) {
+//
+//         }
+//     });
+// }
 
 async function sendTableAddRequest(tableTitle) {
     await $.ajax({
@@ -133,22 +133,22 @@ async function sendTableEditRequest(index, title) {
     });
 }
 
-function getListTitle(id) {
+// function getListTitle(id) {
+//
+//     for (let i = 0; i < listsArray.length; i++) {
+//         if (listsArray[i].id == id) {
+//             return listsArray[i].title;
+//         }
+//     }
+// }
 
-    for (let i = 0; i < listsArray.length; i++) {
-        if (listsArray[i].id == id) {
-            return listsArray[i].title;
-        }
-    }
-}
-
-function setListTitle(response) {
-    for (let i = 0; i < listsArray.length; i++) {
-        if (listsArray[i].id === response.id) {
-            listsArray[i].title = response.title;
-        }
-    }
-}
+// function setListTitle(response) {
+//     for (let i = 0; i < listsArray.length; i++) {
+//         if (listsArray[i].id === response.id) {
+//             listsArray[i].title = response.title;
+//         }
+//     }
+// }
 
 async function getAllCardsByTable() {
     await $.ajax({
@@ -633,4 +633,4 @@ function displayCard(card, index) {
     // $('.list-item-text').autoHeight();
 }
 
-init();
+// init();

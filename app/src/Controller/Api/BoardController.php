@@ -14,26 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BoardController extends AbstractController
 {
-//    /**
-//     * @Route("/", name="get_boards", methods={"GET"})
-//     */
-//    public function getBoards()
-//    {
-//        $repository = $this->getDoctrine()->getRepository(Board::class);
-//        $boards = $repository->findAll();
-//
-//        return $this->json (
-//          [
-//              'data' => array_map(function(Board $item) {
-//                  return [
-//                      'id' => $item->getId(),
-//                      'title' => $item->getBoardTitle()
-//                  ];
-//              }, $boards)
-//          ]
-//        );
-//    }
-
     /**
      * @Route("/get/{id}", name="board_by_id", methods={"GET"})
      * @param Board $board
@@ -43,7 +23,7 @@ class BoardController extends AbstractController
     {
         return $this->json([
                 'id' => $board->getId(),
-                'title' => $board->getBoardTitle()
+                'title' => $board->getTitle()
             ]
         );
     }
@@ -59,7 +39,7 @@ class BoardController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $title = $data['title'];
-        $board->setBoardTitle(trim($title));
+        $board->setTitle(trim($title));
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();

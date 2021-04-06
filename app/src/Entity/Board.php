@@ -22,7 +22,7 @@ class Board
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $boardTitle;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -56,18 +56,18 @@ class Board
     /**
      * @return string|null
      */
-    public function getBoardTitle(): ?string
+    public function getTitle(): ?string
     {
-        return $this->boardTitle;
+        return $this->title;
     }
 
     /**
-     * @param string $boardTitle
+     * @param string $title
      * @return $this
      */
-    public function setBoardTitle($boardTitle): self
+    public function setTitle($title): self
     {
-        $this->boardTitle = $boardTitle;
+        $this->title = $title;
 
         return $this;
     }

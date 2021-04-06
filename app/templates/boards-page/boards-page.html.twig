@@ -1,33 +1,38 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
+
     <div class="container">
         <div class="row">
-            <div class="col-12 align-self-start mt-5  mb-2">
-                <h3>Choose your board</h3>
+            <div class="col-12 align-self-start mt-5 pl-0">
+                <h4>Choose your board</h4>
             </div>
         </div>
         <div class="row">
-            {% for board in boards %}
-                <div class = "col-3 p-2">
-                    <a class="link-to-status-page"  href="{{ path('main_page', {'id' : board.id}) }}">
-                        <div class="card text-white bg-dark" style="background-image: url('{{ asset('build/' ~ board.image) }}'); background-size: cover; height: 100%; width: 100%; background-repeat: no-repeat;">
 
-                            <div class="card-body board-column">
-                                <h6 class="card-title">{{ board.boardTitle }}</h6>
+            {% for board in boards %}
+                <div class="col-3 p-2">
+                    <a class="link-to-status-page" href="{{ path('main_page', {'id' : board.id}) }}">
+                        <div class="card bg-dark board-card"
+                             style="background-image: linear-gradient(rgba(0, 0, 0, 0.1),
+                                     rgba(0, 0, 0, 0.2)), url('{{ asset('build/' ~ board.image) }}');">
+                            <div class="card-body board-column ">
+                                <h6 class="text-white card-title">{{ board.title }}</h6>
                             </div>
                         </div>
                     </a>
                 </div>
             {% endfor %}
-            <div class = "col-3 p-2">
-                <a>
-                    <div class="card text-white bg-secondary mb-3">
-                        <div class="card-body board-column">
-                            <h6 class="card-title">+Add Project</h6>
-                        </div>
+
+            <div class="col-3 p-2 align-items-center">
+                <a data-toggle="modal" data-target="#exampleModalCenter">
+                    <div class="card-body board-column mb-3 h-100" id="add-board-card">
+                        <h6 class="text-muted card-title">+ Add board</h6>
                     </div>
                 </a>
             </div>
         </div>
-        </div>
+
+        {{ include('boards-page/_board-form-modal.html.twig') }}
+    </div>
 {% endblock %}

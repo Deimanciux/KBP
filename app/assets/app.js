@@ -7,6 +7,7 @@
 
 const $ = require('jquery');
 require('bootstrap');
+import './stimulusBootstrap';
 import './js/app.js';
 
 $(document).ready(function () {

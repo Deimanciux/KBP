@@ -1,0 +1,70 @@
+<div {{ stimulus_controller('list', {
+    'list-title':  list.title,
+    'editUrl': path('edit_table', { id: list.id })
+}) }}>
+    <div class="list_placeholders"
+         data-action="dragover->lists#dragOver dragenter->lists#dragEnter dragleave->lists#dragLeave drop->lists#dragDrop"
+    >
+        <div class="list" data-id="{{ list.id }}">
+            <textarea
+                    class="list-heading form-control border-0"
+                    maxLength=100
+                    rows=1
+                    data-listIndex="{{ list.id }}"
+                    data-list-target="heading"
+                    data-action="blur->list#listOnBlurEdit keydown->list#onEnterEdit"
+            >{{ list.title }}</textarea>
+            {% for card in list.cards %}
+                {{ include('main-page/_card.html.twig') }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{#for (let i = 0; i < listsArray.length; i++) {#}
+{#let list_placeholders = document.createElement("div");#}
+{#list_placeholders.className = 'list_placeholders';#}
+{#listsContainerHtml.appendChild(list_placeholders);#}
+
+{#let list = document.createElement("div");#}
+{#list.className = 'list';#}
+{#list.dataset.id = listsArray[i].id;#}
+{#list_placeholders.appendChild(list);#}
+
+{#list_placeholders.addEventListener('dragover', dragOver);#}
+{#list_placeholders.addEventListener('dragenter', dragEnter);#}
+{#list_placeholders.addEventListener('dragleave', dragLeave);#}
+{#list_placeholders.addEventListener('drop', dragDrop);#}
+
+{#let heading = document.createElement("textarea");#}
+{#heading.value = listsArray[i].title;#}
+{#heading.className = 'list-heading';#}
+{#heading.classList.add('form-control');#}
+{#heading.classList.add('border-0');#}
+{#heading.maxLength = LIST_TITLE_MAX_LENGTH;#}
+{#heading.rows = 1;#}
+{#heading.dataset.listIndex = listsArray[i].id;#}
+{#list.appendChild(heading);#}
+
+{#heading.addEventListener('blur', listOnBlurEdit);#}
+{#heading.addEventListener('keydown', onEnterEdit);#}
+
+{#listsHtml = document.querySelectorAll('.list');#}
+
+{#for (let j = 0; j < cardsArray.length; j++) {#}
+{#if (cardsArray[j] && cardsArray[j].list_id === listsArray[i].id) {#}
+{#displayCard(cardsArray[j], j);#}
+{#}#}
+{#}#}
+{#}#}
+{#$('.list-heading').autoHeight();#}
+{#cardsHtml = document.querySelectorAll('.list-item');#}
+
+{#insert_new_list();#}
+
+{#insert_new_task();#}

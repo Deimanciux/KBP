@@ -1,0 +1,15 @@
+<div {{ stimulus_controller('list-addition', {
+    'url' : path('add_table', { id: board.id })
+}) }} data-list-addition-target="addList">
+    <div class="new-list-input-container">
+        <div class="input-container">
+            <input
+                    class='input_item'
+                    data-action="keydown->list-addition#onEnterAddList"
+                    data-list-addition-target="listInput"
+                    type='text'
+                    placeholder='+ Make new list'
+            >
+        </div>
+    </div>
+</div>
