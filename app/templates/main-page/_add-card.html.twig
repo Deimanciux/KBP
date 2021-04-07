@@ -1,0 +1,14 @@
+<div {{ stimulus_controller('card-addition', {
+    'url': path('add_card', { id: list.id })
+}) }} data-card-addition-target="addCard">
+    <div class="input-container">
+        <textarea
+            class="input_item"
+            data-action="keydown->card-addition#onEnterAddCard"
+            type="text"
+            maxlength="300"
+            rows=1
+            placeholder = "+ Add a card"
+        ></textarea>
+    </div>
+</div>

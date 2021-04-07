@@ -379,23 +379,23 @@ function cardOnMouseOut() {
     document.getElementById('edit' + this.dataset.card_index).style.display = 'none';
 }
 
-const cardOnClickToEdit = (event) => {
-    event.target.style.visibility = 'hidden';
-    event.target.parentElement.children[3].style.visibility = 'hidden';
-
-    let cardForEdit = event.target.closest('.list-item');
-
-    event.target.parentElement.children[2].style.display = 'block';
-    event.target.parentElement.draggable = false;
-    cardForEdit.children[0].contentEditable = true;
-    console.log(cardForEdit);
-    console.log(event.target.parentElement);
-
-    cardForEdit.children[0].focus();
-
-    event.target.parentElement.children[2].addEventListener('click', checkPressed);
-    cardForEdit.children[0].addEventListener('blur', editFieldLeftWithoutSubmission);
-};
+// const cardOnClickToEdit = (event) => {
+//     event.target.style.visibility = 'hidden';
+//     event.target.parentElement.children[3].style.visibility = 'hidden';
+//
+//     let cardForEdit = event.target.closest('.list-item');
+//
+//     event.target.parentElement.children[2].style.display = 'block';
+//     event.target.parentElement.draggable = false;
+//     cardForEdit.children[0].contentEditable = true;
+//     console.log(cardForEdit);
+//     console.log(event.target.parentElement);
+//
+//     cardForEdit.children[0].focus();
+//
+//     event.target.parentElement.children[2].addEventListener('click', checkPressed);
+//     cardForEdit.children[0].addEventListener('blur', editFieldLeftWithoutSubmission);
+// };
 
 function checkPressed() {
     this.style.display = "none";

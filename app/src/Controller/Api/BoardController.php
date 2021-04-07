@@ -38,6 +38,10 @@ class BoardController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        if(!$data['title']) {
+            return $this->json(['error_message' => 'Requests lacks some data'], Response::HTTP_FORBIDDEN);
+        }
+
         $title = $data['title'];
         $board->setTitle(trim($title));
 

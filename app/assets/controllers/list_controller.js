@@ -9,8 +9,6 @@ export default class extends Controller {
       editUrl: String
     };
 
-    listsArray = [];
-
     connect() {
         this.adjustTextAreaHeight();
     }
@@ -122,6 +120,4 @@ export default class extends Controller {
             }
         });
     }
-
-
 }

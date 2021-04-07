@@ -64,6 +64,16 @@ class CardController extends AbstractController
         $em->persist($card);
         $em->flush();
 
+        if($data['preview'] == 1) {
+
+            return $this->json([
+                'body' =>  $this->renderView('main-page/_card.html.twig', [
+                    'list' => $table,
+                    'card' => $card
+                ])
+            ]);
+        }
+
         return $this->json([
             'id' => $card->getId(),
             'text' => $card->getText(),

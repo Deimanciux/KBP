@@ -92,6 +92,10 @@
       <path value="$PROJECT_DIR$/app/vendor/psr/cache" />
       <path value="$PROJECT_DIR$/app/vendor/psr/container" />
       <path value="$PROJECT_DIR$/app/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/browser-kit" />
+      <path value="$PROJECT_DIR$/app/vendor/symfony/css-selector" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

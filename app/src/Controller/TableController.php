@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Board;
 use App\Entity\Table;
+use App\Service\TableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,15 +33,23 @@ class TableController extends AbstractController
      * @Route("/title/{id}", name="edit_table", methods={"PATCH"})
      * @param Table $table
      * @param Request $request
+     * @param TableService $tableService
      * @return JsonResponse
      */
-    public function editTable(Table $table, Request $request)
+    public function editTable(Table $table, Request $request, TableService $tableService)
     {
         $data = json_decode($request->getContent(), true);
 
         $title = $data['title'];
 
         $table->setTitle(trim($title));
+
+        if( !$tableService->validateTable($table) == 'valid' ) {
+            return $this->json([
+                    'error' => 'There was an error with your data'
+                ]
+            );
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();

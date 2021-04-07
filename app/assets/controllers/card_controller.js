@@ -1,79 +1,90 @@
-import { Controller } from 'stimulus'
+import { Controller } from 'stimulus';
+
+const CARD_TEXT_MAX_LENGTH = 300;
 
 export default class extends Controller {
     static targets = ['edit', 'delete', 'check', 'listItem', 'listItemText'];
     static values = {
         cardText: String,
-        editUrl: String
+        url: String
     };
 
     connect() {
     }
 
-    cardOnClickToEdit(event) {
+    cardOnClickToEdit() {
         this.editTarget.style.visibility = 'hidden';
         this.deleteTarget.style.visibility = 'hidden';
         this.checkTarget.style.display = 'block';
-
         this.listItemTarget.draggable = false;
         this.listItemTextTarget.contentEditable = true;
         this.listItemTextTarget.focus();
-
-        this.checkTarget.addEventListener('click', this.checkPressed);
-        this.listItemTextTarget.addEventListener(
-            'blur', this.editFieldLeftWithoutSubmission(
-                this.checkTarget,
-                this.editTarget,
-                this.deleteTarget,
-                this.listItemTarget,
-                this.listItemText
-            )
-        );
     }
 
-    async cardOnClickToDelete() {
-        console.log('delete pressed');
-        // let cardsArrayIndex = this.parentElement.dataset.card_index;
-        // this.parentElement.children[1].style.display = "none";
-        // this.parentElement.children[3].style.display = "none";
-        // this.parentElement.remove();
-        // await sendCardDeleteRequest(cardsArray[cardsArrayIndex].id);
-        // delete cardsArray[cardsArrayIndex];
-    }
-
-     checkPressed() {
-        this.editTarget.style.display = "none";
+    cardCheckPressed() {
+        this.checkTarget.style.display = "none";
         this.editTarget.style.visibility = 'visible';
         this.deleteTarget.style.visibility = 'visible';
         this.listItemTarget.draggable = true;
         this.listItemTextTarget.contentEditable = false;
     }
 
-    async editFieldLeftWithoutSubmission(checkTarget, editTarget, deleteTarget, listItemTarget, listItemTextTarget) {
-        console.log('checkTarget', checkTarget);
-        console.log('editTarget', editTarget);
-        console.log('deleteTarget', deleteTarget);
+    async cardLeftWithoutSubmission() {
+        this.checkTarget.style.display = 'none';
+        this.editTarget.style.visibility = 'visible';
+        this.deleteTarget.style.visibility = 'visible';
 
-        checkTarget.style.display = 'none';
-        editTarget.style.visibility = 'visible';
-        deleteTarget.style.visibility = 'visible';
+        this.listItemTextTarget.contentEditable = false;
+        this.listItemTarget.draggable = true;
 
-        listItemTextTarget.contentEditable = false;
-        listItemTarget.draggable = true;
-
-        if(!listItemTextTarget.innerHTML) {
-            listItemTextTarget.innerHTML = this.cardTextValue;
-            console.log('pirmas if');
+        if(!this.listItemTextTarget.innerHTML || this.listItemTextTarget.innerHTML.length > CARD_TEXT_MAX_LENGTH) {
+            this.listItemTextTarget.innerHTML.innerHTML = this.cardTextValue;
             return;
         }
 
         if(this.listItemTextTarget.innerHTML === this.cardTextValue) {
-            console.log('antras if');
             return;
         }
 
-        // await sendCardEditRequest(cardsArray[cardsArrayIndex].id, cardsArray[cardsArrayIndex].text);
+        await this.sendCardEditRequest(this.listItemTextTarget.innerHTML);
         this.cardTextValue = this.listItemTextTarget.innerHTML;
+    }
+
+    async cardOnClickToDelete() {
+        this.deleteTarget.style.display = "none";
+        this.editTarget.style.display = "none";
+        this.listItemTarget.remove();
+        await this.sendCardDeleteRequest();
+    }
+
+    async sendCardEditRequest(text) {
+        await $.ajax({
+            method: "PATCH",
+            url: this.urlValue,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: JSON.stringify({text: text}),
+            success: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    }
+
+    async sendCardDeleteRequest() {
+        await $.ajax({
+            method: "DELETE",
+            url: this.urlValue,
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
     }
 
     cardOnMouseOver() {
@@ -93,4 +104,4 @@ export default class extends Controller {
     dragEnd() {
         console.log('dragEnd');
     }
- }
+}

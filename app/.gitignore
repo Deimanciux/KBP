@@ -244,3 +244,9 @@ yarn-error.log
 /myreport/*
 /phpDepend/*
 /src/.scannerwork/*
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

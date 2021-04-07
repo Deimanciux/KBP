@@ -1,4 +1,4 @@
-import {Controller} from 'stimulus'
+import { Controller } from 'stimulus'
 
 export default class extends Controller {
     static targets = ['addList', 'listInput'];
@@ -19,7 +19,7 @@ export default class extends Controller {
         }
     }
 
-    async sendTableAddRequest(tableTitle, target) {
+    async sendTableAddRequest(tableTitle, addListTarget) {
         await $.ajax({
             method: "POST",
             url: this.urlValue,
@@ -30,7 +30,7 @@ export default class extends Controller {
                 preview: 1
             }),
             success: function (response) {
-                target.insertAdjacentHTML('beforebegin', response['body']);
+                addListTarget.insertAdjacentHTML('beforebegin', response['body']);
             },
             error: function (response) {
             }
