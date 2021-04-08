@@ -101,4 +101,23 @@ export default class extends Controller {
     dragEnd() {
         console.log('dragEnd');
     }
+
+    // const dragStart = (event) => {
+    //     draggedItem = event.target;
+    //     setTimeout(function () {
+    //         event.target.style.display = 'none';
+    //     }, 0);
+    // };
+    //
+    // async function dragEnd (event) {
+    //     event.preventDefault();
+    //     setTimeout(async function () {
+    //         console.log('kada trigeris suveikia');
+    //         event.target.style.display = 'block';
+    //         let cardId = event.target.dataset.card_index;
+    //         await sendCardPositionEditRequest(cardsArray[cardId].id, event.target.parentElement.dataset.id);
+    //         cardsArray[cardId].list_id = event.target.parentElement.dataset.id;
+    //         event.target = null;
+    //     }, 0);
+    // }
 }
