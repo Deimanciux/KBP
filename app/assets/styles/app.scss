@@ -148,6 +148,10 @@ textarea {
   background-color: whitesmoke;
 }
 
+.edit-button, .delete-button, .check-button {
+  display: none;
+}
+
 .delete-button {
   position:absolute;
   top:0;

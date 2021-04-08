@@ -8,11 +8,11 @@
         <div class="list" data-id="{{ list.id }}">
             <textarea
                     class="list-heading form-control border-0"
-                    maxLength=100
-                    rows=1
                     data-listIndex="{{ list.id }}"
                     data-list-target="heading"
                     data-action="blur->list#listOnBlurEdit keydown->list#onEnterEdit"
+                    maxLength="100"
+                    rows="1"
             >{{ list.title }}</textarea>
             {% for card in list.cards %}
                 {{ include('main-page/_card.html.twig') }}

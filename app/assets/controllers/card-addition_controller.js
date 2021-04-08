@@ -57,6 +57,7 @@ export default class extends Controller {
                         'overflow-y': 'hidden'
                     }).height(element.scrollHeight);
                 }
+
                 return this.each(function () {
                     autoHeight_(this).on('input', function () {
                         autoHeight_(this);

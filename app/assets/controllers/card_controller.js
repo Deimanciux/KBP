@@ -1,4 +1,4 @@
-import { Controller } from 'stimulus';
+import {Controller} from 'stimulus';
 
 const CARD_TEXT_MAX_LENGTH = 300;
 
@@ -8,9 +8,6 @@ export default class extends Controller {
         cardText: String,
         url: String
     };
-
-    connect() {
-    }
 
     cardOnClickToEdit() {
         this.editTarget.style.visibility = 'hidden';
@@ -37,12 +34,12 @@ export default class extends Controller {
         this.listItemTextTarget.contentEditable = false;
         this.listItemTarget.draggable = true;
 
-        if(!this.listItemTextTarget.innerHTML || this.listItemTextTarget.innerHTML.length > CARD_TEXT_MAX_LENGTH) {
+        if (!this.listItemTextTarget.innerHTML || this.listItemTextTarget.innerHTML.length > CARD_TEXT_MAX_LENGTH) {
             this.listItemTextTarget.innerHTML.innerHTML = this.cardTextValue;
             return;
         }
 
-        if(this.listItemTextTarget.innerHTML === this.cardTextValue) {
+        if (this.listItemTextTarget.innerHTML === this.cardTextValue) {
             return;
         }
 
@@ -98,7 +95,7 @@ export default class extends Controller {
     }
 
     dragStart(event) {
-       console.log('dragStart');
+        console.log('dragStart');
     }
 
     dragEnd() {

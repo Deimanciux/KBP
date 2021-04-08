@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Kanban Board!{% endblock %}</title>
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('appStyle') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Kanban Board!{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('appStyle') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% include 'navigation.html.twig' %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% include 'navigation.html.twig' %}
 
-        {% block body %}
-        {% endblock %}
-    </body>
+{% block body %}
+{% endblock %}
+</body>
 </html>

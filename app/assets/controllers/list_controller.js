@@ -1,12 +1,12 @@
-import { Controller } from 'stimulus'
+import {Controller} from 'stimulus'
 
 const LIST_TITLE_MAX_LENGTH = 100;
 
 export default class extends Controller {
     static targets = ['heading'];
     static values = {
-      listTitle: String,
-      editUrl: String
+        listTitle: String,
+        editUrl: String
     };
 
     connect() {
@@ -26,7 +26,7 @@ export default class extends Controller {
             return;
         }
 
-        if(event.target.value === this.listTitleValue) {
+        if (event.target.value === this.listTitleValue) {
             return;
         }
 
@@ -112,6 +112,7 @@ export default class extends Controller {
                         'overflow-y': 'hidden'
                     }).height(element.scrollHeight);
                 }
+
                 return this.each(function () {
                     autoHeight_(this).on('input', function () {
                         autoHeight_(this);

@@ -1,13 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {#    // kaip buvo pries keiciant#}
-    {#    <div class="app">#}
-    {#        <div id="lists" data-board_id="{{ id }}"></div>#}
-    {#    </div>#}
-
-    {#    //pakeitus#}
-
     <div class="app" style="background-image: url(' {{ asset('build/' ~ board.image) }} ');">
         <div {{ stimulus_controller('board', {
             'board-title' : board.title,
@@ -23,7 +16,6 @@
                     autocomplete="off"
             >
         </div>
-
         <div id="lists">
             {% for list in board.tables %}
                 {{ include( 'main-page/_list.html.twig') }}

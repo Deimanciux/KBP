@@ -3,53 +3,40 @@
     'url' : path('edit_card', { id: card.id})
 }) }} >
     <div
-        class="list-item"
-        data-id = "{{ list.id }}"
-        data-card_index = "{{ card.id  }}"
-        data-action="
+            class="list-item"
+            data-action="
             dragstart->card#dragStart
             dragend->card#dragEnd
             mouseover->card#cardOnMouseOver
             mouseout->card#cardOnMouseOut"
-        data-card-target="listItem"
-        draggable = "true"
-        contentEditable = "false"
+            data-card-target="listItem"
+            draggable="true"
+            contentEditable="false"
     >
         <div
-            class="list-item-text"
-            data-id = "{{ list.id }}"
-            data-card_index = "{{ card.id }}"
-            data-action=" focusout->card#cardLeftWithoutSubmission"
-            data-card-target="listItemText"
-            contentEditable = "false"
+                class="list-item-text"
+                data-action=" focusout->card#cardLeftWithoutSubmission"
+                data-card-target="listItemText"
+                contentEditable="false"
         >{{ card.text }}</div>
         <div>
             <i
-                class="fa fa-pencil-square-o edit-button"
-                id = "edit {{ card.id }}"
-                data-action="click->card#cardOnClickToEdit"
-                data-id = "{{ list.id }}"
-                data-card-target = "edit"
-                contentEditable = "false"
-                style="display: none"
+                    class="fa fa-pencil-square-o edit-button"
+                    data-action="click->card#cardOnClickToEdit"
+                    data-card-target="edit"
+                    contentEditable="false"
             ></i>
             <i
-                class="fa fa-check check-button"
-                id = "check {{ card.id }}"
-                data-id = "{{ list.id }}"
-                data-card-target = "check"
-                data-action="click->card#cardCheckPressed"
-                contentEditable = "false"
-                style="display: none"
+                    class="fa fa-check check-button"
+                    data-card-target="check"
+                    data-action="click->card#cardCheckPressed"
+                    contentEditable="false"
             ></i>
             <i
-                class="fa fa-trash-o delete-button"
-                id = "delete {{ card.id }}"
-                data-action="click->card#cardOnClickToDelete"
-                data-card-target = "delete"
-                data-id = "{{ list.id }}"
-                contentEditable = "false"
-                style="display: none"
+                    class="fa fa-trash-o delete-button"
+                    data-action="click->card#cardOnClickToDelete"
+                    data-card-target="delete"
+                    contentEditable="false"
             ></i>
         </div>
     </div>

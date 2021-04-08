@@ -21,7 +21,6 @@ export default class extends Controller {
             if (element.dataset.backgroundId === this.backgroundIdValue) {
                 element.classList.add('selected');
                 element.children[0].classList.remove('d-none');
-                console.log(element.children[0]);
             } else {
                 element.classList.remove('selected');
                 element.children[0].classList.add('d-none');
