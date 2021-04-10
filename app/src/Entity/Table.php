@@ -24,7 +24,7 @@ class Table
     /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=100)
+     * @Assert\Length(max=100)
      */
     private $title;
 

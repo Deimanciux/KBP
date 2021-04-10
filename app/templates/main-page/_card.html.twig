@@ -1,14 +1,16 @@
 <div {{ stimulus_controller('card', {
     'cardText' : card.text,
-    'url' : path('edit_card', { id: card.id})
+    'cardId': card.id,
+    'url' : path('edit_card', { id: card.id} )
 }) }} >
     <div
             class="list-item"
-            data-action="
-            dragstart->card#dragStart
-            dragend->card#dragEnd
-            mouseover->card#cardOnMouseOver
-            mouseout->card#cardOnMouseOut"
+            data-action="mouseover->card#cardOnMouseOver
+            mouseout->card#cardOnMouseOut
+            dragstart->drag-and-drop#dragStart
+            dragend->drag-and-drop#dragEnd"
+            data-drag-and-drop-target="card"
+            id="card{{ card.id }}"
             data-card-target="listItem"
             draggable="true"
             contentEditable="false"
@@ -19,7 +21,6 @@
                 data-card-target="listItemText"
                 contentEditable="false"
         >{{ card.text }}</div>
-        <div>
             <i
                     class="fa fa-pencil-square-o edit-button"
                     data-action="click->card#cardOnClickToEdit"
@@ -38,6 +39,5 @@
                     data-card-target="delete"
                     contentEditable="false"
             ></i>
-        </div>
     </div>
 </div>

@@ -199,19 +199,19 @@ async function sendCardEditRequest(index, text) {
     });
 }
 
-async function sendCardPositionEditRequest(card_id, table_id) {
-    await $.ajax({
-        method: "PATCH",
-        url: "/card/" + card_id + "/table/" + table_id,
-        dataType: 'json',
-        success: function (response) {
-
-        },
-        error: function (response) {
-
-        }
-    });
-}
+// async function sendCardPositionEditRequest(card_id, table_id) {
+//     await $.ajax({
+//         method: "PATCH",
+//         url: "/card/" + card_id + "/table/" + table_id,
+//         dataType: 'json',
+//         success: function (response) {
+//
+//         },
+//         error: function (response) {
+//
+//         }
+//     });
+// }
 
 async function sendCardDeleteRequest(index) {
     await $.ajax({

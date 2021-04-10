@@ -21,6 +21,7 @@ class Card
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Assert\Length(max="300")
      */
     private $text;
 
@@ -33,7 +34,7 @@ class Card
     /**
      * @ORM\Column(type="integer", length=2)
      * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=50)
+     * @Assert\Length(max=50)
      */
     private $place;
 

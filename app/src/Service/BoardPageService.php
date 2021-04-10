@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use http\Message;
-use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
 
 class BoardPageService

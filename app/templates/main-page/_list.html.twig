@@ -1,24 +1,30 @@
 <div {{ stimulus_controller('list', {
     'list-title':  list.title,
     'editUrl': path('edit_table', { id: list.id })
-}) }}>
-    <div class="list_placeholders"
-         data-action="dragover->lists#dragOver dragenter->lists#dragEnter dragleave->lists#dragLeave drop->lists#dragDrop"
-    >
-        <div class="list" data-id="{{ list.id }}">
-            <textarea
-                    class="list-heading form-control border-0"
-                    data-listIndex="{{ list.id }}"
-                    data-list-target="heading"
-                    data-action="blur->list#listOnBlurEdit keydown->list#onEnterEdit"
-                    maxLength="100"
-                    rows="1"
-            >{{ list.title }}</textarea>
-            {% for card in list.cards %}
-                {{ include('main-page/_card.html.twig') }}
-            {% endfor %}
-        </div>
+}) }} >
+    <div {{ stimulus_controller('drag-and-drop', { listId: list.id }) }} style="height: 100%;">
+        <div class="list_placeholders"
+             data-action="
+             dragenter->drag-and-drop#dragEnter
+             dragleave->drag-and-drop#dragLeave
+             dragover->drag-and-drop#dragOver
+             drop->drag-and-drop#dragDrop"
+        >
+            <div class="list" data-id="{{ list.id }}" data-drag-and-drop-target="list">
+                <textarea
+                        class="list-heading form-control border-0"
+                        data-listIndex="{{ list.id }}"
+                        data-list-target="heading"
+                        data-action="blur->list#listOnBlurEdit keydown->list#onEnterEdit"
+                        maxLength="100"
+                        rows="1"
+                >{{ list.title }}</textarea>
+                {% for card in list.cards %}
+                    {{ include('main-page/_card.html.twig') }}
+                {% endfor %}
+            </div>
 
-        {{ include('main-page/_add-card.html.twig') }}
+            {{ include('main-page/_add-card.html.twig') }}
+        </div>
     </div>
 </div>

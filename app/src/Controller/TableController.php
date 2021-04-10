@@ -44,7 +44,7 @@ class TableController extends AbstractController
 
         $table->setTitle(trim($title));
 
-        if( !$tableService->validateTable($table) == 'valid' ) {
+        if(!$tableService->validateTable($table)) {
             return $this->json([
                     'error' => 'There was an error with your data'
                 ]

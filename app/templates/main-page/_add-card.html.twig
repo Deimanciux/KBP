@@ -1,7 +1,7 @@
 <div {{ stimulus_controller('card-addition', {
     'url': path('add_card', { id: list.id })
 }) }} data-card-addition-target="addCard">
-    <div class="input-container">
+    <div class="input-container" data-drag-and-drop-target="inputContainer">
         <textarea
                 class="input_item"
                 data-action="keydown->card-addition#onEnterAddCard"

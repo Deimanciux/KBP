@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Board;
+use App\Service\BoardService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,9 +35,13 @@ class BoardController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function edit(Board $board, Request $request)
+    public function edit(Board $board, Request $request, BoardService $boardService)
     {
         $data = json_decode($request->getContent(), true);
+
+        if(!$boardService->validateBoard($board, $request->getContent())) {
+            return $this->json(['error' => 'There was an error with sent data'], Response::HTTP_BAD_REQUEST);
+        }
 
         if(!$data['title']) {
             return $this->json(['error_message' => 'Requests lacks some data'], Response::HTTP_FORBIDDEN);

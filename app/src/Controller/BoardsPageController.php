@@ -44,10 +44,6 @@ class BoardsPageController extends AbstractController
             return $this->redirectToRoute('index_page');
         }
 
-        if($form->isSubmitted() && !$form->isValid()) {
-            echo 'suds';
-        }
-
         return $this->render('boards-page/boards-page.html.twig', [
             'boards' => $repository->findBy(['user' => $user]),
             'form' => $form->createView(),

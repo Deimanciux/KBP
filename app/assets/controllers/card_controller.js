@@ -6,7 +6,8 @@ export default class extends Controller {
     static targets = ['edit', 'delete', 'check', 'listItem', 'listItemText'];
     static values = {
         cardText: String,
-        url: String
+        url: String,
+        dragUrl: String
     };
 
     cardOnClickToEdit() {
@@ -54,6 +55,16 @@ export default class extends Controller {
         await this.sendCardDeleteRequest();
     }
 
+    cardOnMouseOver() {
+        this.deleteTarget.style.display = 'block';
+        this.editTarget.style.display = 'block';
+    }
+
+    cardOnMouseOut() {
+        this.deleteTarget.style.display = 'none';
+        this.editTarget.style.display = 'none';
+    }
+
     async sendCardEditRequest(text) {
         await $.ajax({
             method: "PATCH",
@@ -83,41 +94,4 @@ export default class extends Controller {
             }
         });
     }
-
-    cardOnMouseOver() {
-        this.deleteTarget.style.display = 'block';
-        this.editTarget.style.display = 'block';
-    }
-
-    cardOnMouseOut() {
-        this.deleteTarget.style.display = 'none';
-        this.editTarget.style.display = 'none';
-    }
-
-    dragStart(event) {
-        console.log('dragStart');
-    }
-
-    dragEnd() {
-        console.log('dragEnd');
-    }
-
-    // const dragStart = (event) => {
-    //     draggedItem = event.target;
-    //     setTimeout(function () {
-    //         event.target.style.display = 'none';
-    //     }, 0);
-    // };
-    //
-    // async function dragEnd (event) {
-    //     event.preventDefault();
-    //     setTimeout(async function () {
-    //         console.log('kada trigeris suveikia');
-    //         event.target.style.display = 'block';
-    //         let cardId = event.target.dataset.card_index;
-    //         await sendCardPositionEditRequest(cardsArray[cardId].id, event.target.parentElement.dataset.id);
-    //         cardsArray[cardId].list_id = event.target.parentElement.dataset.id;
-    //         event.target = null;
-    //     }, 0);
-    // }
 }

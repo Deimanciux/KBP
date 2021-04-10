@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Board;
 use App\Entity\Card;
 use App\Entity\Table;
+use App\Service\CardService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class CardController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="get_cards", methods={"GET"})
+     * @param Board $board
+     * @return JsonResponse
      */
     public function getAllCardsByTable(Board $board)
     {
@@ -31,12 +33,17 @@ class CardController extends AbstractController
      * @Route("/{id}", name="edit_card", methods={"PATCH"})
      * @param Card $card
      * @param Request $request
+     * @param CardService $cardService
      * @return JsonResponse
      */
-    public function editCard(Card $card, Request $request)
+    public function editCard(Card $card, Request $request, CardService $cardService)
     {
-        $data = json_decode($request->getContent(), true);
-        $card->setText($data["text"]);
+//        $data = json_decode($request->getContent(), true);
+//        $card->setText($data["text"]);
+        if(!$cardService->validateCard($card, $request->getContent())) {
+            return $this->json(['error' => 'There was an error with sent data'], Response::HTTP_BAD_REQUEST);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
