@@ -3,15 +3,27 @@
 namespace App\Tests\Service;
 
 use App\Service\BoardPageService;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 
-class BoardPageServiceTest extends TestCase
+class BoardPageServiceTest extends KernelTestCase
 {
+    private $projectDir;
+
+    /**
+     *
+     */
+    public function setUp(): void
+    {
+        self::bootKernel();
+
+        $this->projectDir = self::$container->getParameter('kernel.project_dir');
+    }
+
     public function testFindImages()
     {
         $boardPageService = new BoardPageService;
-        $result = $boardPageService->findImages('/var/www/project/tests/assets/imagesPositive');
+        $result = $boardPageService->findImages($this->projectDir . '/tests/assets/imagesPositive');
 
         $this->assertTrue(count($result) > 0);
     }
@@ -19,7 +31,7 @@ class BoardPageServiceTest extends TestCase
     public function testFindImagesInEmptyFolder()
     {
         $boardPageService = new BoardPageService;
-        $result = $boardPageService->findImages('/var/www/project/tests/assets/imagesNegative');
+        $result = $boardPageService->findImages($this->projectDir . '/tests/assets/imagesNegative');
 
         $this->assertTrue(count($result) === 0);
     }
