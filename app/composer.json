@@ -1,4 +1,5 @@
 {
+    "name": "kbp",
     "description": "kanban board is designed to track work and progress",
     "type": "project",
     "license": "proprietary",
