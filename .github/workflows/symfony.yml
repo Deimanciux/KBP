@@ -41,10 +41,13 @@ jobs:
         run: php -v
 
       - name: Dump files in directory
-        run: ls 
+        run: ls
 
       - name: Move to project directory
         run: cd app
+
+      - name: Dump files in directory after directory change
+          run: ls
 
       ## —— Yarn 🐱 ————————————————————————————————————————————————————————————
       - name: Yarn install
