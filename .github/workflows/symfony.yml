@@ -60,9 +60,6 @@ jobs:
         run: yarn run encore production
 
       # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
