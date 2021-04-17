@@ -40,6 +40,9 @@ jobs:
       - name: Check PHP Version
         run: php -v
 
+      - name: Move to project directory
+        run: cd app
+
       ## —— Yarn 🐱 ————————————————————————————————————————————————————————————
       - name: Yarn install
         uses: actions/setup-node@v2
