@@ -23,6 +23,9 @@ jobs:
       matrix:
         php-versions: ['7.4']
     steps:
+      defaults:
+        run:
+          working-directory: ./app
       # —— Setup Github actions 🐙 —————————————————————————————————————————————
       # https://github.com/actions/checkout (official)
       - name: Checkout
@@ -41,12 +44,6 @@ jobs:
         run: php -v
 
       - name: Dump files in directory
-        run: ls
-
-      - name: Move to project directory
-        run: cd ./app
-
-      - name: Dump files in directory after directory change
         run: ls
 
       ## —— Yarn 🐱 ————————————————————————————————————————————————————————————
