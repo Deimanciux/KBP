@@ -40,6 +40,9 @@ jobs:
       - name: Check PHP Version
         run: php -v
 
+      - name: Dump files in directory
+        run: ls 
+
       - name: Move to project directory
         run: cd app
 
