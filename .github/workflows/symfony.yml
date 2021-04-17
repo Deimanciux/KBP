@@ -77,7 +77,7 @@ jobs:
       ## —— Tests ✅ ———————————————————————————————————————————————————————————
       - name: Load Doctrine fixtures
         run: |
-          make load-fixtures
+          php bin/console doctrine:fixtures:load
 
       - name: Run functionnal and unit tests
         run: |
