@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Board;
 use App\Form\BoardType;
 use App\Service\BoardPageService;
+use App\Service\ImageFinderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,15 +21,15 @@ class BoardsPageController extends AbstractController
     /**
      * @Route("/", name="index_page")
      * @param Request $request
-     * @param BoardPageService $boardPageService
+     * @param ImageFinderInterface $imageFinder
      * @return Response
      */
-    public function index(Request $request, BoardPageService $boardPageService)
+    public function index(Request $request, ImageFinderInterface $imageFinder)
     {
         $user = $this->getUser();
         $repository = $this->getDoctrine()->getRepository(Board::class);
 
-        $images = $boardPageService->findImages('/var/www/project/assets/images');
+        $images = $imageFinder->findImages('/var/www/project/assets/images');
 
         $board = new Board();
         $form = $this->createForm(BoardType::class, $board, ['images' => $images]);

@@ -10,7 +10,7 @@ export default class extends Controller {
     };
 
     connect() {
-        this.adjustTextAreaHeight();
+        $('.list-heading').autoHeight();
     }
 
     onEnterEdit(event) {
@@ -40,34 +40,7 @@ export default class extends Controller {
             url: this.editUrlValue,
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
-            data: JSON.stringify({title: title}),
-            success: function (response) {
-
-            },
-            error: function (response) {
-
-            }
-        });
-    }
-
-    adjustTextAreaHeight() {
-        $('.list-heading').autoHeight();
-
-        jQuery.fn.extend({
-            autoHeight: function () {
-                function autoHeight_(element) {
-                    return jQuery(element).css({
-                        'height': 'auto',
-                        'overflow-y': 'hidden'
-                    }).height(element.scrollHeight);
-                }
-
-                return this.each(function () {
-                    autoHeight_(this).on('input', function () {
-                        autoHeight_(this);
-                    });
-                });
-            }
+            data: JSON.stringify({title: title})
         });
     }
 }

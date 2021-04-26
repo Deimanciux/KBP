@@ -58,12 +58,6 @@ export default class extends Controller {
             method: "PATCH",
             url: '/card/' + cardId + '/table/' + this.listIdValue,
             dataType: 'json',
-            success: function (response) {
-
-            },
-            error: function (response) {
-
-            }
         });
     }
 }

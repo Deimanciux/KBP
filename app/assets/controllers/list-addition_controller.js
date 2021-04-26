@@ -31,8 +31,6 @@ export default class extends Controller {
             }),
             success: function (response) {
                 addListTarget.insertAdjacentHTML('beforebegin', response['body']);
-            },
-            error: function (response) {
             }
         });
     }

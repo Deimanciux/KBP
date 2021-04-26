@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\Finder\Finder;
 
-class BoardPageService
+class BoardPageService implements ImageFinderInterface
 {
     public function findImages(string $path)
     {

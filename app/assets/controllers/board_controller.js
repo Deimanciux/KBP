@@ -37,12 +37,6 @@ export default class extends Controller {
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             data: JSON.stringify({title: boardTitle}),
-            success: function (response) {
-
-            },
-            error: function (response) {
-
-            }
         });
     }
 }

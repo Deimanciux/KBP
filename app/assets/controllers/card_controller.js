@@ -72,12 +72,6 @@ export default class extends Controller {
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             data: JSON.stringify({text: text}),
-            success: function (response) {
-
-            },
-            error: function (response) {
-
-            }
         });
     }
 
@@ -86,12 +80,6 @@ export default class extends Controller {
             method: "DELETE",
             url: this.urlValue,
             contentType: "application/json; charset=utf-8",
-            success: function (response) {
-
-            },
-            error: function (response) {
-
-            }
         });
     }
 }

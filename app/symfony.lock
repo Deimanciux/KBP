@@ -453,7 +453,7 @@
             "ref": "34a82422147bc632dec0db2676bf27aaaa582ba0"
         },
         "files": [
-            "assets/app.js",
+            "assets/helper-functions.js",
             "assets/stimulusBootstrap.js",
             "assets/controllers.json",
             "assets/controllers/hello_controller.js",

@@ -8,7 +8,7 @@
 const $ = require('jquery');
 require('bootstrap');
 import './stimulusBootstrap';
-import './js/app.js';
+import './js/helper-functions.js';
 
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover();

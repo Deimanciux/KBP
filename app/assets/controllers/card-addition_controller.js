@@ -9,7 +9,7 @@ export default class extends Controller {
     };
 
     connect() {
-        this.adjustTextAreaHeight();
+        $('.input_item').autoHeight();
     }
 
     async onEnterAddCard(event) {
@@ -39,30 +39,6 @@ export default class extends Controller {
             }),
             success: function (response) {
                 addCardTarget.parentElement.children[0].insertAdjacentHTML('beforeend', response['body']);
-            },
-            error: function (response) {
-
-            }
-        });
-    }
-
-    adjustTextAreaHeight() {
-        $('.input_item').autoHeight();
-
-        jQuery.fn.extend({
-            autoHeight: function () {
-                function autoHeight_(element) {
-                    return jQuery(element).css({
-                        'height': 'auto',
-                        'overflow-y': 'hidden'
-                    }).height(element.scrollHeight);
-                }
-
-                return this.each(function () {
-                    autoHeight_(this).on('input', function () {
-                        autoHeight_(this);
-                    });
-                });
             }
         });
     }

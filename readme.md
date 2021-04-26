@@ -67,9 +67,9 @@ Project uses some third party tools for code quality inspection:
 
  - Some native command line functions used for metric display
   ```bash
-  symfony console app:help
-  symfony console app:method-metrics
-  symfony console app:object-metrics
+  symfony console command:help
+  symfony console command:method-metrics
+  symfony console command:object-metrics
  ```
 
 #### sonarqube
