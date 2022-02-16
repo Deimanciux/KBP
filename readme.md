@@ -44,6 +44,11 @@ php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
+- run fixtures 
+```bash
+php bin/console doctrine:fixtures:load
+```
+
 ## Usage
 
 Go to the url: http://localhost:8080
